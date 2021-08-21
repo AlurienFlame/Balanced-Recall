@@ -1,5 +1,7 @@
 {
     "item.balancedrecall.magic_mirror": "Magic Mirror",
     "item.balancedrecall.dimensional_mirror": "Dimensional Mirror",
-    "item.balancedrecall.sleeping_mat": "Sleeping Mat"
+    "item.balancedrecall.sleeping_mat": "Sleeping Mat",
+    "balancedrecall.spawn_obstructed": "Your spawnpoint is obstructed, falling back to world spawn.",
+    "balancedrecall.fail_cross_dimension": "This mirror is too weak to cross the veil between worlds! Maybe a rare nether metal could help..."
 }
