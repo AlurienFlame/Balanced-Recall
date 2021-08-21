@@ -1,6 +1,7 @@
 package net.balancedrecall;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import net.minecraft.block.BedBlock;
 import net.minecraft.block.Block;
@@ -102,6 +103,11 @@ public class MagicMirror extends Item {
         }
         targetWorld.playSound(null, spawnpoint, SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.PLAYERS, 0.4f, 1f);
 
+        // TODO: Instead of breaking, become non-functional on 1 durability like elytra do
+        stack.damage(1, (LivingEntity)player, (Consumer<LivingEntity>)((p) -> {
+            System.out.println("Used 1 durability on magic mirror");
+            p.sendToolBreakStatus(player.getActiveHand());
+        }));
 
         player.getItemCooldownManager().set(this, 20);
 
