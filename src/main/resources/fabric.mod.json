@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "balancedrecall",
+  "version": "1.0.0",
+
+  "name": "Balanced Recall",
+  "description": "Teleport to your spawnpoint in a balanced way",
+  "authors": [
+    "AlurienFlame"
+  ],
+  "contact": {
+    "homepage": "https://modrinth.com/mod/balancedrecall",
+    "sources": "https://github.com/AlurienFlame/BalancedRecall"
+  },
+
+  "license": "MIT",
+  "icon": "assets/balancedrecall/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.balancedrecall.BalancedRecall"
+    ]
+  },
+  "mixins": [
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.17.x",
+    "java": ">=16"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
