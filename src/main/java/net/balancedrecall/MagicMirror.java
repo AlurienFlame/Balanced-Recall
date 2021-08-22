@@ -40,9 +40,6 @@ public class MagicMirror extends Item {
 		return stack.getDamage() < stack.getMaxDamage() - 1;
 	}
 
-    // TODO: Make repairable using custom recipe type - anvil has issues:
-    // fixed repair value - can't repair entire item with one ingredient
-    // repair cost goes up every time - undesirable
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity playerEntity, Hand hand) {
