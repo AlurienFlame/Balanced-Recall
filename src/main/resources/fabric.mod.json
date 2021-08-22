@@ -23,6 +23,7 @@
     ]
   },
   "mixins": [
+    "balancedrecall.mixins.json"
   ],
 
   "depends": {
