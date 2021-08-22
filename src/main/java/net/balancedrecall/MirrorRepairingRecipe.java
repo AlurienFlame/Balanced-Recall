@@ -28,7 +28,11 @@ public class MirrorRepairingRecipe extends SmithingRecipe {
 	}
 
     public boolean matches(Inventory inventory, World world) {
-        return super.matches(inventory, world);
+        boolean result = super.matches(inventory, world);
+		if (inventory.getStack(0).getDamage() == 0) {
+			return false;
+		}
+		return result;
 	}
 
     @Override
@@ -45,6 +49,11 @@ public class MirrorRepairingRecipe extends SmithingRecipe {
     public RecipeType<?> getType() {
         return RecipeType.SMITHING;
     }
+
+	@Override
+	public boolean isIgnoredInRecipeBook() {
+		return true;
+	}
 
     public static class Serializer implements RecipeSerializer<MirrorRepairingRecipe> {
 		public MirrorRepairingRecipe read(Identifier identifier, JsonObject jsonObject) {
