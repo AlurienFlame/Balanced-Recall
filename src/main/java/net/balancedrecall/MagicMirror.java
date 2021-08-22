@@ -44,6 +44,7 @@ public class MagicMirror extends Item {
     // fixed repair value - can't repair entire item with one ingredient
     // repair cost goes up every time - undesirable
 
+    @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity playerEntity, Hand hand) {
         ItemStack stack = playerEntity.getStackInHand(hand);
         if (MagicMirror.isUsable(stack)) {
@@ -55,10 +56,12 @@ public class MagicMirror extends Item {
         }
     }
 
+    @Override
     public UseAction getUseAction(ItemStack stack) {
         return UseAction.BOW;
     }
 
+    @Override
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
         // finishUsing runs on both the server and the client (for some reason),
         // but we only want to run this code on the server.
@@ -129,6 +132,7 @@ public class MagicMirror extends Item {
         return stack;
     }
 
+    @Override
     public int getMaxUseTime(ItemStack stack) {
         return 20;
     }

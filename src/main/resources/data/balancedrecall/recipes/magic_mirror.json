@@ -1,24 +1,18 @@
 {
     "type": "minecraft:crafting_shaped",
-    "pattern": [
-      " DE",
-      " BD",
-      "D  "
-    ],
+    "pattern": [" DE", " BD", "D  "],
     "key": {
-      "D": {
-        "item": "minecraft:diamond"
-      },
-      "E": {
-        "item": "minecraft:ender_eye"
-      }
-      ,
-      "B": {
-        "item": "minecraft:blue_ice"
-      }
+        "D": {
+            "item": "minecraft:diamond"
+        },
+        "E": {
+            "item": "minecraft:ender_eye"
+        },
+        "B": {
+            "item": "minecraft:blue_ice"
+        }
     },
     "result": {
-      "item": "balancedrecall:magic_mirror"
+        "item": "balancedrecall:magic_mirror"
     }
-  }
-
+}
