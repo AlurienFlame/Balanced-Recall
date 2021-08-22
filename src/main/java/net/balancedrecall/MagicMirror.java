@@ -89,15 +89,15 @@ public class MagicMirror extends Item {
             Optional<Vec3d> respawnPosition = Optional.empty();
 
             if (respawnBlock instanceof RespawnAnchorBlock) {
-                respawnPosition = RespawnAnchorBlock.findRespawnPosition(EntityType.PLAYER, world, spawnpoint);
+                respawnPosition = RespawnAnchorBlock.findRespawnPosition(EntityType.PLAYER, targetWorld, spawnpoint);
 
             } else if (respawnBlock instanceof BedBlock) {
-                respawnPosition = BedBlock.findWakeUpPosition(EntityType.PLAYER, world, spawnpoint, serverPlayer.getSpawnAngle());
+                respawnPosition = BedBlock.findWakeUpPosition(EntityType.PLAYER, targetWorld, spawnpoint, serverPlayer.getSpawnAngle());
 
             } else {
                 // Spawnpoint isn't attatched to a respawn anchor or bed, find a safe place to spawn directly
                 boolean footBlockClear = respawnBlock.canMobSpawnInside();
-			    boolean headBlockClear = world.getBlockState(spawnpoint.up()).getBlock().canMobSpawnInside();
+			    boolean headBlockClear = targetWorld.getBlockState(spawnpoint.up()).getBlock().canMobSpawnInside();
 			    if (footBlockClear && headBlockClear) {
                     respawnPosition = Optional.of(new Vec3d((double)spawnpoint.getX() + 0.5D, (double)spawnpoint.getY() + 0.1D, (double)spawnpoint.getZ() + 0.5D));
                 } else {
@@ -132,6 +132,7 @@ public class MagicMirror extends Item {
 
     @Override
     public int getMaxUseTime(ItemStack stack) {
+        // TODO: Taking damage should interrupt use
         return 20;
     }
 

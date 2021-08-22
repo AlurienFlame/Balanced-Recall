@@ -12,12 +12,14 @@ public class BalancedRecall implements ModInitializer {
     public static final String MODID = "balancedrecall";
 
     public static final Item MAGIC_MIRROR = new MagicMirror(new FabricItemSettings().group(ItemGroup.TOOLS).maxDamage(256));
+    public static final Item DIMENSIONAL_MIRROR = new DimensionalMirror(new FabricItemSettings().group(ItemGroup.TOOLS).maxDamage(512));
 
     public static final RecipeSerializer<MirrorRepairingRecipe> MIRROR_REPAIRING_SERIALIZER = new MirrorRepairingRecipe.Serializer();
 
     @Override
     public void onInitialize() {
         Registry.register(Registry.ITEM, new Identifier(MODID, "magic_mirror"), MAGIC_MIRROR);
+        Registry.register(Registry.ITEM, new Identifier(MODID, "dimensional_mirror"), DIMENSIONAL_MIRROR);
 
         Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(MODID, "mirror_repairing"), MIRROR_REPAIRING_SERIALIZER);
     }
