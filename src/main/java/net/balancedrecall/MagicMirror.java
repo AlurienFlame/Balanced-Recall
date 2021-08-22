@@ -81,7 +81,6 @@ public class MagicMirror extends Item {
 
         if (spawnpoint != null) {
             // Player spawn
-            System.out.println("Teleporting to player spawn...");
 
             // Find respawn position
             // PlayerEntity.findRespawnPosition exhausts respawn anchor charges, which is undesirable, so instead we replicate its functionality directly
@@ -121,7 +120,6 @@ public class MagicMirror extends Item {
         targetWorld.playSound(null, spawnpoint, SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.PLAYERS, 0.4f, 1f);
 
         stack.damage(1, (LivingEntity)player, (Consumer<LivingEntity>)((p) -> {
-            System.out.println("Used 1 durability on magic mirror");
             p.sendToolBreakStatus(player.getActiveHand());
         }));
 
@@ -143,7 +141,6 @@ public class MagicMirror extends Item {
             return;
         }
 
-        System.out.println("Teleporting to world spawn...");
         ServerWorld overworld = serverPlayer.getServer().getWorld(ServerWorld.OVERWORLD);
         BlockPos worldSpawn = overworld.getSpawnPos();
         serverPlayer.teleport(overworld, worldSpawn.getX(), worldSpawn.getY(), worldSpawn.getZ(), serverPlayer.getSpawnAngle(), 0.5F);

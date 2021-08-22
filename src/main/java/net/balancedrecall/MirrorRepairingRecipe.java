@@ -28,9 +28,7 @@ public class MirrorRepairingRecipe extends SmithingRecipe {
 	}
 
     public boolean matches(Inventory inventory, World world) {
-        boolean result = super.matches(inventory, world);
-        System.out.println(result);
-        return result;
+        return super.matches(inventory, world);
 	}
 
     @Override
