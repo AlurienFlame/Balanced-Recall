@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": ["   ", "HHH", "BBB"],
+    "key": {
+        "H": {
+            "item": "minecraft:hay_block"
+        },
+        "B": {
+            "item": "minecraft:bamboo"
+        }
+    },
+    "result": {
+        "item": "balancedrecall:sleeping_mat"
+    }
+}
