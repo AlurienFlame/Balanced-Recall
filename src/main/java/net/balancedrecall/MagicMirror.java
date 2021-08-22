@@ -12,7 +12,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsage;
-import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -27,7 +26,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class MagicMirror extends Item {
-
     boolean interdimensional;
 
     public MagicMirror(Settings settings) {
@@ -42,11 +40,9 @@ public class MagicMirror extends Item {
 		return stack.getDamage() < stack.getMaxDamage() - 1;
 	}
 
-    // Can be repaired with ender pearls or eyes of ender
-    // TODO: Customize repair value
-    public boolean canRepair(ItemStack stack, ItemStack ingredient) {
-		return ingredient.isOf(Items.ENDER_PEARL) || ingredient.isOf(Items.ENDER_EYE);
-	}
+    // TODO: Make repairable using custom recipe type - anvil has issues:
+    // fixed repair value - can't repair entire item with one ingredient
+    // repair cost goes up every time - undesirable
 
     public TypedActionResult<ItemStack> use(World world, PlayerEntity playerEntity, Hand hand) {
         ItemStack stack = playerEntity.getStackInHand(hand);
