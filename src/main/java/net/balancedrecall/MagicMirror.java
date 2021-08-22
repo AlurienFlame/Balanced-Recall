@@ -12,6 +12,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsage;
+import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -27,14 +28,35 @@ import net.minecraft.world.World;
 
 public class MagicMirror extends Item {
 
-    boolean interdimensional = false;
+    boolean interdimensional;
 
     public MagicMirror(Settings settings) {
         super(settings);
+        interdimensional = false;
     }
 
+    // TODO: Different texture when not usable
+
+    // Can't be used on 1 or less durability
+    public static boolean isUsable(ItemStack stack) {
+		return stack.getDamage() < stack.getMaxDamage() - 1;
+	}
+
+    // Can be repaired with ender pearls or eyes of ender
+    // TODO: Customize repair value
+    public boolean canRepair(ItemStack stack, ItemStack ingredient) {
+		return ingredient.isOf(Items.ENDER_PEARL) || ingredient.isOf(Items.ENDER_EYE);
+	}
+
     public TypedActionResult<ItemStack> use(World world, PlayerEntity playerEntity, Hand hand) {
-        return ItemUsage.consumeHeldItem(world, playerEntity, hand);
+        ItemStack stack = playerEntity.getStackInHand(hand);
+        if (MagicMirror.isUsable(stack)) {
+            // Use item
+            return ItemUsage.consumeHeldItem(world, playerEntity, hand);
+        } else {
+            // Item is out of durability, don't use it
+            return TypedActionResult.pass(stack);
+        }
     }
 
     public UseAction getUseAction(ItemStack stack) {
@@ -48,8 +70,6 @@ public class MagicMirror extends Item {
             return stack;
         }
         
-        // TODO: Set up a durability 0 failure case, similar to broken Elytra
-
         PlayerEntity player = (PlayerEntity) user;
         ServerPlayerEntity serverPlayer = (ServerPlayerEntity) user;
         ServerWorld targetWorld = serverPlayer.server.getWorld(serverPlayer.getSpawnPointDimension());
@@ -103,7 +123,6 @@ public class MagicMirror extends Item {
         }
         targetWorld.playSound(null, spawnpoint, SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.PLAYERS, 0.4f, 1f);
 
-        // TODO: Instead of breaking, become non-functional on 1 durability like elytra do
         stack.damage(1, (LivingEntity)player, (Consumer<LivingEntity>)((p) -> {
             System.out.println("Used 1 durability on magic mirror");
             p.sendToolBreakStatus(player.getActiveHand());
