@@ -34,6 +34,7 @@ public class MagicMirror extends Item {
     }
 
     // TODO: Different texture when not usable
+    // TODO: Animation when using
 
     // Can't be used on 1 or less durability
     public static boolean isUsable(ItemStack stack) {
