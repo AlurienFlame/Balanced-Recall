@@ -20,6 +20,8 @@ public abstract class MixinPlayerEntity extends LivingEntity implements MatSleep
     @Shadow
 	private int sleepTimer;
 
+    // Because we can't use PlayerEntity.trySleep as it's overriden by
+    // ServerEntity.trySleep, which sets spawn (we don't want that)
     @Override
     public void sleepOnMat(BlockPos pos) {
         super.sleep(pos);

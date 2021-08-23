@@ -40,10 +40,6 @@ public class SleepingMat extends Item {
         // ServerPlayerEntity.trySleep is where spawn is set, we need to circumvent it while taking advantage of as much vanilla code as possible
         // We also need to make sure that time since last sleep doesn't get reset - I don't want the sleeping mat to stop phantoms from spawning
 
-
-        // After a bunch of checking, ServerPlayerEntity.trySleep calls PlayerEntity.trySleep, which calls LivingEntity.sleep, which seems to do what we want it to do.
-        // Now we just need to manually replicate all the checking that trySleep does.
-
         if (world.isClient) {
             // Running on the client (bad)
             return TypedActionResult.pass(stack);
@@ -79,18 +75,12 @@ public class SleepingMat extends Item {
             }
         }
 
-        // TODO: Increment use stats for these items
-        // TODO: Add advancements
-        // Set statistics and advancements
+        // TODO: Figure out if this is resetting phantom timer or not
+        // TODO: Set statistics and advancements
         // Statistics to set: Times item used, times slept on sleeping mat
         // Statistics to NOT set: Time since last slept, times slept in bed, phantom timer
 
-        // Criteria.SLEPT_ON_MAT.trigger(this); // Advancement
-
         // Go to sleep
-        // user.sleepTimer = 0;
-        // FIXME: running on server instead of client
-        // user.trySleep(user.getBlockPos());
         ((MatSleepingPlayer) user).sleepOnMat(user.getBlockPos());
 
         // Skip the night
@@ -110,11 +100,9 @@ public class SleepingMat extends Item {
             for (Hand hand : Hand.values()) {
                 ItemStack stack = user.getStackInHand(hand);
                 if (stack.getItem() == BalancedRecall.SLEEPING_MAT) {
-                    System.out.println("Sleeping mat is in use");
                     return true;
                 }
             }
-            System.out.println("Sleeping mat is NOT in use");
         }
         return false;
     }
