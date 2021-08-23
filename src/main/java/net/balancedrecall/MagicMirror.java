@@ -111,7 +111,7 @@ public class MagicMirror extends Item {
                 targetWorld.playSound(null, spawnpoint, SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.PLAYERS, 0.4f, 1f);
 
             } else {
-                // Your spawnpoint is obstructed, falling back to world spawn.
+                // You have no home bed or charged respawn anchor, or it was obstructed.
                 player.sendSystemMessage(new TranslatableText("block.minecraft.spawn.not_valid"), Util.NIL_UUID);
                 teleportToWorldSpawn(player, serverPlayer);
             }
