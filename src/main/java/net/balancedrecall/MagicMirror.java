@@ -86,17 +86,14 @@ public class MagicMirror extends Item {
                 respawnPosition = RespawnAnchorBlock.findRespawnPosition(EntityType.PLAYER, targetWorld, spawnpoint);
 
             } else if (respawnBlock instanceof BedBlock) {
-                // FIXME: Does not check if bed is missing, only if it's obstructed
                 respawnPosition = BedBlock.findWakeUpPosition(EntityType.PLAYER, targetWorld, spawnpoint, serverPlayer.getSpawnAngle());
 
-            } else {
-                // Spawnpoint isn't attatched to a respawn anchor or bed, find a safe place to spawn directly
+            } else if (serverPlayer.isSpawnPointSet()){
+                // Spawnpoint set by /spawnpoint command or equivalent
                 boolean footBlockClear = respawnBlock.canMobSpawnInside();
 			    boolean headBlockClear = targetWorld.getBlockState(spawnpoint.up()).getBlock().canMobSpawnInside();
 			    if (footBlockClear && headBlockClear) {
                     respawnPosition = Optional.of(new Vec3d((double)spawnpoint.getX() + 0.5D, (double)spawnpoint.getY() + 0.1D, (double)spawnpoint.getZ() + 0.5D));
-                } else {
-                    respawnPosition = Optional.empty(); 
                 }
             }
 
@@ -115,7 +112,7 @@ public class MagicMirror extends Item {
 
             } else {
                 // Your spawnpoint is obstructed, falling back to world spawn.
-                player.sendSystemMessage(new TranslatableText("balancedrecall.spawn_obstructed"), Util.NIL_UUID);
+                player.sendSystemMessage(new TranslatableText("block.minecraft.spawn.not_valid"), Util.NIL_UUID);
                 teleportToWorldSpawn(player, serverPlayer);
             }
         } else {
