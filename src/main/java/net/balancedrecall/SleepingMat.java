@@ -2,6 +2,8 @@ package net.balancedrecall;
 
 import java.util.List;
 
+import net.minecraft.entity.EntityPose;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -98,5 +100,22 @@ public class SleepingMat extends Item {
         ((ServerWorld) world).updateSleepingPlayers();
         
         return TypedActionResult.consume(stack);
+    }
+
+    // For checking that player is sleeping on a mat, instead of just sleeping randomly for no reason
+    public static boolean isHoldingSleepingMat(LivingEntity user) {
+        // This is called every tick, so don't waste time.
+        if (user.getPose() == EntityPose.SLEEPING || user.isSleeping()) { 
+            // Check both hands for a mat
+            for (Hand hand : Hand.values()) {
+                ItemStack stack = user.getStackInHand(hand);
+                if (stack.getItem() == BalancedRecall.SLEEPING_MAT) {
+                    System.out.println("Sleeping mat is in use");
+                    return true;
+                }
+            }
+            System.out.println("Sleeping mat is NOT in use");
+        }
+        return false;
     }
 }

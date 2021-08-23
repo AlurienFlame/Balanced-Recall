@@ -3,7 +3,7 @@
     "minVersion": "0.8",
     "package": "net.balancedrecall.mixin",
     "compatibilityLevel": "JAVA_16",
-    "mixins": ["MixinPlayerEntity"],
+    "mixins": ["MixinPlayerEntity", "MixinLivingEntity"],
     "client": [],
     "server": [],
     "injectors": {
