@@ -1,6 +1,7 @@
 package net.balancedrecall;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.LivingEntity;
@@ -18,6 +19,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.stat.Stats;
 
 public class SleepingMat extends Item {
     public static final TranslatableText USER_DEAD = new TranslatableText("item.balancedrecall.sleeping_mat.user_dead");
@@ -75,19 +77,27 @@ public class SleepingMat extends Item {
             }
         }
 
-        // TODO: Figure out if this is resetting phantom timer or not
-        // TODO: Set statistics and advancements
-        // Statistics to set: Times item used, times slept on sleeping mat
-        // Statistics to NOT set: Time since last slept, times slept in bed, phantom timer
-
         // Go to sleep
         ((MatSleepingPlayer) user).sleepOnMat(user.getBlockPos());
-
+        
         // Skip the night
         if (!((ServerPlayerEntity) user).getServerWorld().isSleepingEnabled()) {
             user.sendSystemMessage(NOT_POSSIBLE, Util.NIL_UUID);
         }
         ((ServerWorld) world).updateSleepingPlayers();
+        
+        // TODO: Figure out if this is resetting phantom timer or not
+        // TODO: Set advancements
+        // Statistics to NOT set: Time since last slept, times slept in bed, phantom timer
+        
+        // Update statistics
+        user.incrementStat(Stats.USED.getOrCreateStat(this));
+        user.incrementStat(BalancedRecall.MAT_SLEEPS);
+        
+        // Damage durability
+        stack.damage(1, user, (Consumer<LivingEntity>)((p) -> {
+            p.sendToolBreakStatus(user.getActiveHand());
+        }));
         
         return TypedActionResult.consume(stack);
     }

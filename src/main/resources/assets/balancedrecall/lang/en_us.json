@@ -6,5 +6,7 @@
     "balancedrecall.fail_cross_dimension": "This mirror is too weak to cross the veil between worlds! Maybe a rare nether metal could help...",
     "item.balancedrecall.sleeping_mat.wrong_dimension": "You can't sleep in this dimension.",
     "item.balancedrecall.sleeping_mat.user_dead": "You must be alive to sleep.",
-    "item.balancedrecall.sleeping_mat.already_asleep": "You can't sleep when you're already asleep."
+    "item.balancedrecall.sleeping_mat.already_asleep": "You can't sleep when you're already asleep.",
+    "stat.balancedrecall.recalls": "Recalls",
+    "stat.balancedrecall.mat_sleeps": "Times Slept On a Mat"
 }

@@ -16,6 +16,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.stat.Stats;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -26,11 +27,11 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class MagicMirror extends Item {
-    boolean interdimensional;
+    boolean isInterdimensional;
 
     public MagicMirror(Settings settings) {
         super(settings);
-        interdimensional = false;
+        isInterdimensional = false;
     }
 
     // TODO: Different texture when not usable
@@ -73,7 +74,7 @@ public class MagicMirror extends Item {
 
         // FIXME: Causes a fail in situations where the player is in the overworld and an obstructed spawn is in the nether,
         // even though that causes a fallback and should teleport the player to world spawn.
-        if ( !interdimensional && serverPlayer.getServerWorld() != targetWorld) {
+        if ( !isInterdimensional && serverPlayer.getServerWorld() != targetWorld) {
             // This mirror is too weak to cross the veil between worlds! Maybe a rare nether metal could help...
             player.sendSystemMessage(new TranslatableText("balancedrecall.fail_cross_dimension"), Util.NIL_UUID);
             return stack;
@@ -120,11 +121,17 @@ public class MagicMirror extends Item {
             teleportToWorldSpawn(player, serverPlayer);
         }
         targetWorld.playSound(null, spawnpoint, SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.PLAYERS, 0.4f, 1f);
+        
+        // Update statistics
+        player.incrementStat(BalancedRecall.RECALLS);
+        player.incrementStat(Stats.USED.getOrCreateStat(this));
 
+        // Damage durability
         stack.damage(1, (LivingEntity)player, (Consumer<LivingEntity>)((p) -> {
             p.sendToolBreakStatus(player.getActiveHand());
         }));
 
+        // Put on cooldown
         player.getItemCooldownManager().set(this, 20);
 
         return stack;
@@ -137,7 +144,7 @@ public class MagicMirror extends Item {
     }
 
     private void teleportToWorldSpawn(PlayerEntity player, ServerPlayerEntity serverPlayer) {
-        if (!interdimensional && serverPlayer.getServerWorld().getRegistryKey() != ServerWorld.OVERWORLD) {
+        if (!isInterdimensional && serverPlayer.getServerWorld().getRegistryKey() != ServerWorld.OVERWORLD) {
             // This mirror is too weak to cross the veil between worlds! Maybe a rare nether metal could help...
             player.sendSystemMessage(new TranslatableText("balancedrecall.fail_cross_dimension"), Util.NIL_UUID);
             return;
