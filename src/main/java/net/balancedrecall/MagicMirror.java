@@ -71,6 +71,8 @@ public class MagicMirror extends Item {
         ServerPlayerEntity serverPlayer = (ServerPlayerEntity) user;
         ServerWorld targetWorld = serverPlayer.server.getWorld(serverPlayer.getSpawnPointDimension());
 
+        // FIXME: Causes a fail in situations where the player is in the overworld and an obstructed spawn is in the nether,
+        // even though that causes a fallback and should teleport the player to world spawn.
         if ( !interdimensional && serverPlayer.getServerWorld() != targetWorld) {
             // This mirror is too weak to cross the veil between worlds! Maybe a rare nether metal could help...
             player.sendSystemMessage(new TranslatableText("balancedrecall.fail_cross_dimension"), Util.NIL_UUID);
