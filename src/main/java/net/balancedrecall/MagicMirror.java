@@ -72,14 +72,6 @@ public class MagicMirror extends Item {
         ServerPlayerEntity serverPlayer = (ServerPlayerEntity) user;
         ServerWorld targetWorld = serverPlayer.server.getWorld(serverPlayer.getSpawnPointDimension());
 
-        // FIXME: Causes a fail in situations where the player is in the overworld and an obstructed spawn is in the nether,
-        // even though that causes a fallback and should teleport the player to world spawn.
-        if ( !isInterdimensional && serverPlayer.getServerWorld() != targetWorld) {
-            // This mirror is too weak to cross the veil between worlds! Maybe a rare nether metal could help...
-            player.sendSystemMessage(new TranslatableText("balancedrecall.fail_cross_dimension"), Util.NIL_UUID);
-            return stack;
-        }
-
         BlockPos spawnpoint = serverPlayer.getSpawnPointPosition();
 
         if (spawnpoint != null) {
@@ -94,6 +86,7 @@ public class MagicMirror extends Item {
                 respawnPosition = RespawnAnchorBlock.findRespawnPosition(EntityType.PLAYER, targetWorld, spawnpoint);
 
             } else if (respawnBlock instanceof BedBlock) {
+                // FIXME: Does not check if bed is missing, only if it's obstructed
                 respawnPosition = BedBlock.findWakeUpPosition(EntityType.PLAYER, targetWorld, spawnpoint, serverPlayer.getSpawnAngle());
 
             } else {
@@ -109,18 +102,26 @@ public class MagicMirror extends Item {
 
             // Teleport to respawn position
             if (respawnPosition.isPresent()) {
+
+                if ( !isInterdimensional && serverPlayer.getServerWorld() != targetWorld) {
+                    // This mirror is too weak to cross the veil between worlds! Maybe a rare nether metal could help...
+                    player.sendSystemMessage(new TranslatableText("balancedrecall.fail_cross_dimension"), Util.NIL_UUID);
+                    return stack;
+                }
+
                 Vec3d spawnVec = respawnPosition.get();
                 serverPlayer.teleport(targetWorld, spawnVec.getX(), spawnVec.getY(), spawnVec.getZ(), serverPlayer.getSpawnAngle(), 0.5F);
+                targetWorld.playSound(null, spawnpoint, SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.PLAYERS, 0.4f, 1f);
+
             } else {
-                // No space, fall back to world spawn
+                // Your spawnpoint is obstructed, falling back to world spawn.
                 player.sendSystemMessage(new TranslatableText("balancedrecall.spawn_obstructed"), Util.NIL_UUID);
                 teleportToWorldSpawn(player, serverPlayer);
             }
         } else {
-            // World spawn
+            // You don't have a spawnpoint, teleporting to world spawn instead
             teleportToWorldSpawn(player, serverPlayer);
         }
-        targetWorld.playSound(null, spawnpoint, SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.PLAYERS, 0.4f, 1f);
         
         // Update statistics
         player.incrementStat(BalancedRecall.RECALLS);
@@ -153,5 +154,6 @@ public class MagicMirror extends Item {
         ServerWorld overworld = serverPlayer.getServer().getWorld(ServerWorld.OVERWORLD);
         BlockPos worldSpawn = overworld.getSpawnPos();
         serverPlayer.teleport(overworld, worldSpawn.getX(), worldSpawn.getY(), worldSpawn.getZ(), serverPlayer.getSpawnAngle(), 0.5F);
+        overworld.playSound(null, worldSpawn, SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.PLAYERS, 0.4f, 1f);
     }
 }
