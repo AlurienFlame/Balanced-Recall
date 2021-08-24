@@ -13,7 +13,6 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.Util;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -33,8 +32,6 @@ public class SleepingMat extends Item {
         super(settings);
     }
 
-    // TODO: Figure out the difference between sendSystemMessage and sendMessage, and possibly swap them out
-
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
@@ -47,22 +44,22 @@ public class SleepingMat extends Item {
             return TypedActionResult.pass(stack);
         } else if (!user.isAlive()) {
             // User is dead
-            user.sendSystemMessage(USER_DEAD, Util.NIL_UUID);
+            user.sendMessage(USER_DEAD, false);
             return TypedActionResult.pass(stack);
 
         } else if (user.isSleeping()) {
             // User is already sleeping
-            user.sendSystemMessage(ALREADY_ASLEEP, Util.NIL_UUID);
+            user.sendMessage(ALREADY_ASLEEP, false);
             return TypedActionResult.pass(stack);
 
         } else if (!world.getDimension().isNatural()) {
             // Wrong dimension
-            user.sendSystemMessage(WRONG_DIMENSION, Util.NIL_UUID);
+            user.sendMessage(WRONG_DIMENSION, false);
             return TypedActionResult.pass(stack);
 
         } else if (world.isDay()) {
             // It's daytime
-            user.sendSystemMessage(NOT_POSSIBLE_NOW, Util.NIL_UUID);
+            user.sendMessage(NOT_POSSIBLE_NOW, false);
             return TypedActionResult.pass(stack);
             
         } else if (!user.isCreative()) {
@@ -72,7 +69,7 @@ public class SleepingMat extends Item {
                 return hostileEntity.isAngryAt(user);
             });
             if (!list.isEmpty()) {
-                user.sendSystemMessage(NOT_SAFE, Util.NIL_UUID);
+                user.sendMessage(NOT_SAFE, false);
                 return TypedActionResult.pass(stack);
             }
         }
@@ -82,7 +79,7 @@ public class SleepingMat extends Item {
         
         // Skip the night
         if (!((ServerPlayerEntity) user).getServerWorld().isSleepingEnabled()) {
-            user.sendSystemMessage(NOT_POSSIBLE, Util.NIL_UUID);
+            user.sendMessage(NOT_POSSIBLE, false);
         }
         ((ServerWorld) world).updateSleepingPlayers();
         
