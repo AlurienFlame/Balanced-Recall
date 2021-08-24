@@ -123,7 +123,6 @@ public class MagicMirror extends Item {
         player.incrementStat(BalancedRecall.RECALLS);
         player.incrementStat(Stats.USED.getOrCreateStat(this));
 
-        // FIXME: Seemingly infinite durability with unbreaking?
         // Damage durability
         stack.damage(1, (LivingEntity)player, (Consumer<LivingEntity>)((p) -> {
             p.sendToolBreakStatus(player.getActiveHand());
