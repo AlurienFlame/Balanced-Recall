@@ -2,7 +2,7 @@
     "parent": "balancedrecall:craft_magic_mirror",
     "display": {
         "icon": {
-            "item": "balancedrecall:magic_mirror"
+            "item": "minecraft:ender_pearl"
         },
         "title": {
             "translate": "advancements.balancedrecall.repair_magic_mirror.title"
