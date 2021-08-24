@@ -138,7 +138,6 @@ public class MagicMirror extends Item {
 
     @Override
     public int getMaxUseTime(ItemStack stack) {
-        // TODO: Taking damage should interrupt use
         return 20;
     }
 
