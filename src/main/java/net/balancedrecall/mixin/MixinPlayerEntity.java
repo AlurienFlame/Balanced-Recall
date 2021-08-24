@@ -26,6 +26,5 @@ public abstract class MixinPlayerEntity extends LivingEntity implements MatSleep
     public void sleepOnMat(BlockPos pos) {
         super.sleep(pos);
 		this.sleepTimer = 0;
-        System.out.println("Sleeping on mat.");
     }
 }
