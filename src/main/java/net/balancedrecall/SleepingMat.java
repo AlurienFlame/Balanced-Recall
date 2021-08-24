@@ -83,9 +83,6 @@ public class SleepingMat extends Item {
         }
         ((ServerWorld) world).updateSleepingPlayers();
         
-        // TODO: Figure out if this is resetting phantom timer or not
-        // Statistics to NOT set: Time since last slept, times slept in bed, phantom timer
-        
         // Update statistics
         user.incrementStat(Stats.USED.getOrCreateStat(this));
         user.incrementStat(BalancedRecall.MAT_SLEEPS);
