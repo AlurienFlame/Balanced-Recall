@@ -42,6 +42,10 @@ public class MirrorRepairingRecipe extends SmithingRecipe {
         // Output should have full durability
         output.setDamage(0);
 
+		// TODO: Advancement for repairing a mirror
+		// Proposed strategy: Add an nbt tag to repaired mirrors, and check
+		// for that tag with a minecraft:inventory_changed advancement trigger
+
         return output;
 	}
 
