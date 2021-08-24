@@ -1,0 +1,26 @@
+{
+    "parent": "balancedrecall:craft_sleeping_mat",
+    "display": {
+        "icon": {
+            "item": "balancedrecall:sleeping_mat"
+        },
+        "title": {
+            "translate": "advancements.balancedrecall.use_sleeping_mat.title"
+        },
+        "description": {
+            "translate": "advancements.balancedrecall.use_sleeping_mat.description"
+        }
+    },
+    "criteria": {
+        "use_sleeping_mat": {
+            "trigger": "minecraft:item_durability_changed",
+            "conditions": {
+                "delta": -1,
+                "item": {
+                    "items": ["balancedrecall:sleeping_mat"]
+                }
+            }
+        }
+    },
+    "requirements": [["use_sleeping_mat"]]
+}

@@ -1,0 +1,53 @@
+{
+    "display": {
+        "icon": {
+            "item": "balancedrecall:magic_mirror"
+        },
+        "title": {
+            "translate": "advancements.balancedrecall.root.title"
+        },
+        "description": {
+            "translate": "advancements.balancedrecall.root.description"
+        },
+        "show_toast": false,
+        "announce_to_chat": false,
+        "background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
+    },
+    "criteria": {
+        "get_magic_mirror": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": ["balancedrecall:magic_mirror"]
+                    }
+                ]
+            }
+        },
+        "get_dimensional_mirror": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": ["balancedrecall:dimensional_mirror"]
+                    }
+                ]
+            }
+        },
+        "get_sleeping_mat": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": ["balancedrecall:sleeping_mat"]
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        [
+            "get_magic_mirror", "get_dimensional_mirror", "get_sleeping_mat"
+        ]
+    ]
+}

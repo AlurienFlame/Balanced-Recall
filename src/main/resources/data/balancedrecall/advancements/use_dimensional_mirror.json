@@ -1,0 +1,26 @@
+{
+    "parent": "balancedrecall:craft_dimensional_mirror",
+    "display": {
+        "icon": {
+            "item": "balancedrecall:dimensional_mirror"
+        },
+        "title": {
+            "translate": "advancements.balancedrecall.use_dimensional_mirror.title"
+        },
+        "description": {
+            "translate": "advancements.balancedrecall.use_dimensional_mirror.description"
+        }
+    },
+    "criteria": {
+        "get_dimensional_mirror": {
+            "trigger": "minecraft:item_durability_changed",
+            "conditions": {
+                "delta": -1,
+                "item": {
+                    "items": ["balancedrecall:dimensional_mirror"]
+                }
+            }
+        }
+    },
+    "requirements": [["get_dimensional_mirror"]]
+}

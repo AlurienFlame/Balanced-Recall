@@ -1,0 +1,26 @@
+{
+    "parent": "balancedrecall:craft_magic_mirror",
+    "display": {
+        "icon": {
+            "item": "balancedrecall:magic_mirror"
+        },
+        "title": {
+            "translate": "advancements.balancedrecall.use_magic_mirror.title"
+        },
+        "description": {
+            "translate": "advancements.balancedrecall.use_magic_mirror.description"
+        }
+    },
+    "criteria": {
+        "use_magic_mirror": {
+            "trigger": "minecraft:item_durability_changed",
+            "conditions": {
+                "delta": -1,
+                "item": {
+                    "items": ["balancedrecall:magic_mirror", "balancedrecall:dimensional_mirror"]
+                }
+            }
+        }
+    },
+    "requirements": [["use_magic_mirror"]]
+}

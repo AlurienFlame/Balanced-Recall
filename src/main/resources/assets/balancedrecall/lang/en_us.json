@@ -8,5 +8,19 @@
     "item.balancedrecall.sleeping_mat.user_dead": "You must be alive to sleep.",
     "item.balancedrecall.sleeping_mat.already_asleep": "You can't sleep when you're already asleep.",
     "stat.balancedrecall.recalls": "Recalls",
-    "stat.balancedrecall.mat_sleeps": "Times Slept On a Mat"
+    "stat.balancedrecall.mat_sleeps": "Times Slept On a Sleeping Mat",
+    "advancements.balancedrecall.root.title": "Balanced Recall",
+    "advancements.balancedrecall.root.description": "Mirrors and a mat",
+    "advancements.balancedrecall.craft_magic_mirror.title": "This Looks Familiar",
+    "advancements.balancedrecall.craft_magic_mirror.description": "Craft a Magic Mirror",
+    "advancements.balancedrecall.use_magic_mirror.title": "Honey, I'm Home!",
+    "advancements.balancedrecall.use_magic_mirror.description": "Use a Magic Mirror to teleport to your respawn point",
+    "advancements.balancedrecall.craft_dimensional_mirror.title": "Ancient Nether Secrets",
+    "advancements.balancedrecall.craft_dimensional_mirror.description": "Upgrade a Magic Mirror with a Netherite Ingot",
+    "advancements.balancedrecall.use_dimensional_mirror.title": "Veil Piercer",
+    "advancements.balancedrecall.use_dimensional_mirror.description": "Use a Dimensional Mirror to travel between dimensions",
+    "advancements.balancedrecall.craft_sleeping_mat.title": "Better Than Nothing",
+    "advancements.balancedrecall.craft_sleeping_mat.description": "Craft a Sleeping Mat",
+    "advancements.balancedrecall.use_sleeping_mat.title": "Not so Sweet Dreams",
+    "advancements.balancedrecall.use_sleeping_mat.description": "Sleep on a Sleeping Mat to avoid setting your respawn point"
 }

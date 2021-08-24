@@ -87,7 +87,6 @@ public class SleepingMat extends Item {
         ((ServerWorld) world).updateSleepingPlayers();
         
         // TODO: Figure out if this is resetting phantom timer or not
-        // TODO: Set advancements
         // Statistics to NOT set: Time since last slept, times slept in bed, phantom timer
         
         // Update statistics
