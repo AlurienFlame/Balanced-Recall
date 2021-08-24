@@ -13,6 +13,7 @@ import com.google.gson.JsonObject;
 
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtInt;
 import net.minecraft.network.PacketByteBuf;
 
 public class MirrorRepairingRecipe extends SmithingRecipe {
@@ -42,9 +43,8 @@ public class MirrorRepairingRecipe extends SmithingRecipe {
         // Output should have full durability
         output.setDamage(0);
 
-		// TODO: Advancement for repairing a mirror
-		// Proposed strategy: Add an nbt tag to repaired mirrors, and check
-		// for that tag with a minecraft:inventory_changed advancement trigger
+		// Add nbt tag to trigger advancement
+		output.setSubNbt("BalancedRecallCharged", NbtInt.of(1));
 
         return output;
 	}
