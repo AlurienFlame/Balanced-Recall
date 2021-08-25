@@ -2,5 +2,37 @@
     "parent": "item/generated",
     "textures": {
       "layer0": "balancedrecall:item/dimensional_mirror"
-    }
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "recalling": 0.01
+            },
+            "model": "balancedrecall:item/dimensional_mirror_using_1"
+        },
+        {
+            "predicate": {
+                "recalling": 0.2
+            },
+            "model": "balancedrecall:item/dimensional_mirror_using_2"
+        },
+        {
+            "predicate": {
+                "recalling": 0.4
+            },
+            "model": "balancedrecall:item/dimensional_mirror_using_3"
+        },
+        {
+            "predicate": {
+                "recalling": 0.6
+            },
+            "model": "balancedrecall:item/dimensional_mirror_using_4"
+        },
+        {
+            "predicate": {
+                "recalling": 0.8
+            },
+            "model": "balancedrecall:item/dimensional_mirror_using_5"
+        }
+    ]
   }
