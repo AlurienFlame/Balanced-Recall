@@ -50,15 +50,9 @@ public class BalancedRecall implements ModInitializer {
             return (itemStack.getMaxUseTime() - livingEntity.getItemUseTimeLeft()) / 20.0F;
         });
         FabricModelPredicateProviderRegistry.register(MAGIC_MIRROR, new Identifier("broken"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int seed) -> {
-            if (livingEntity == null) {
-                return 0.0F;
-            }
             return (itemStack.getDamage() >= itemStack.getMaxDamage() - 1) ? 1F : 0F;
         });
         FabricModelPredicateProviderRegistry.register(DIMENSIONAL_MIRROR, new Identifier("broken"), (ItemStack itemStack, ClientWorld clientWorld, LivingEntity livingEntity, int seed) -> {
-            if (livingEntity == null) {
-                return 0.0F;
-            }
             return (itemStack.getDamage() >= itemStack.getMaxDamage() - 1) ? 1F : 0F;
         });
 
