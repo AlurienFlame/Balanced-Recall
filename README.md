@@ -4,7 +4,7 @@ Teleport to your spawnpoint in a balanced way.
 
 This mod requires [Fabric](https://fabricmc.net/) and the [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api).
 
-#### Features
+## Features
 
 
 **Magic Mirror**
@@ -27,7 +27,7 @@ The dimensional mirror is identical to the magic mirror, except it has twice the
 
 The sleeping mat allows you to skip the night without having to place down a bed and set your spawn. Be warned, though, sleeping on this rough straw-padded bamboo mat is not enough to ward off phantoms. The sleeping mat has 128 durability.
 
-#### Planned features
+## Planned features
 
 - **Config Options**
 	- Toggle taking damage interrupting recall
