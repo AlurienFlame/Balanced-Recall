@@ -33,6 +33,12 @@
                 "recalling": 0.8
             },
             "model": "balancedrecall:item/magic_mirror_using_5"
+        },
+        {
+            "predicate": {
+                "broken": 1
+            },
+            "model": "balancedrecall:item/magic_mirror_broken"
         }
     ]
 }

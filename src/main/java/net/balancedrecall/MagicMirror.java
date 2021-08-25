@@ -33,8 +33,6 @@ public class MagicMirror extends Item {
         isInterdimensional = false;
     }
 
-    // TODO: Different texture when not usable
-
     // Can't be used on 1 or less durability
     public static boolean isUsable(ItemStack stack) {
 		return stack.getDamage() < stack.getMaxDamage() - 1;
