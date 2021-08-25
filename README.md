@@ -1,6 +1,6 @@
 # Balanced Recall
 
-Teleport to your spawnpoint in a balanced way.
+*Mirrors and a mat*
 
 This mod requires [Fabric](https://fabricmc.net/) and the [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api).
 
