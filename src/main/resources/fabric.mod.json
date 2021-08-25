@@ -20,6 +20,9 @@
   "entrypoints": {
     "main": [
       "net.balancedrecall.BalancedRecall"
+    ],
+    "client": [
+      "net.balancedrecall.BalancedRecallClient"
     ]
   },
   "mixins": [
