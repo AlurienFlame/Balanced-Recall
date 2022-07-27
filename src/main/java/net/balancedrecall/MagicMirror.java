@@ -17,7 +17,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
@@ -84,7 +84,7 @@ public class MagicMirror extends Item {
             } else if (respawnBlock instanceof BedBlock) {
                 respawnPosition = BedBlock.findWakeUpPosition(EntityType.PLAYER, targetWorld, spawnpoint, serverPlayer.getSpawnAngle());
 
-            } else if (serverPlayer.isSpawnPointSet()){
+            } else if (serverPlayer.isSpawnForced()){
                 // Spawnpoint set by /spawnpoint command or equivalent
                 boolean footBlockClear = respawnBlock.canMobSpawnInside();
 			    boolean headBlockClear = targetWorld.getBlockState(spawnpoint.up()).getBlock().canMobSpawnInside();
@@ -96,9 +96,9 @@ public class MagicMirror extends Item {
             // Teleport to respawn position
             if (respawnPosition.isPresent()) {
 
-                if ( !isInterdimensional && serverPlayer.getServerWorld() != targetWorld) {
+                if ( !isInterdimensional && serverPlayer.getWorld() != targetWorld) {
                     // This mirror is too weak to cross the veil between worlds! Maybe a rare nether metal could help...
-                    player.sendMessage(new TranslatableText("balancedrecall.fail_cross_dimension"), false);
+                    player.sendMessage(Text.translatable("balancedrecall.fail_cross_dimension"), false);
                     return stack;
                 }
 
@@ -108,7 +108,7 @@ public class MagicMirror extends Item {
 
             } else {
                 // You have no home bed or charged respawn anchor, or it was obstructed.
-                player.sendMessage(new TranslatableText("block.minecraft.spawn.not_valid"), false);
+                player.sendMessage(Text.translatable("block.minecraft.spawn.not_valid"), false);
                 teleportToWorldSpawn(player, serverPlayer);
             }
         } else {
@@ -137,9 +137,9 @@ public class MagicMirror extends Item {
     }
 
     private void teleportToWorldSpawn(PlayerEntity player, ServerPlayerEntity serverPlayer) {
-        if (!isInterdimensional && serverPlayer.getServerWorld().getRegistryKey() != ServerWorld.OVERWORLD) {
+        if (!isInterdimensional && serverPlayer.getWorld().getRegistryKey() != ServerWorld.OVERWORLD) {
             // This mirror is too weak to cross the veil between worlds! Maybe a rare nether metal could help...
-            player.sendMessage(new TranslatableText("balancedrecall.fail_cross_dimension"), false);
+            player.sendMessage(Text.translatable("balancedrecall.fail_cross_dimension"), false);
             return;
         }
 
