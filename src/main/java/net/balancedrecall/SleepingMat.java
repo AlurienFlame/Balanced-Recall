@@ -11,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.Box;
@@ -21,10 +22,10 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.stat.Stats;
 
 public class SleepingMat extends Item {
-    public static final MutableText USER_DEAD = Text.translatable("item.balancedrecall.sleeping_mat.user_dead");
-	public static final MutableText ALREADY_ASLEEP = Text.translatable("item.balancedrecall.sleeping_mat.already_asleep");
-	public static final MutableText WRONG_DIMENSION = Text.translatable("item.balancedrecall.sleeping_mat.wrong_dimension");
-	public static final MutableText NOT_POSSIBLE = Text.translatable("sleep.not_possible");
+    public static final MutableText USER_DEAD = new TranslatableText("item.balancedrecall.sleeping_mat.user_dead");
+	public static final MutableText ALREADY_ASLEEP = new TranslatableText("item.balancedrecall.sleeping_mat.already_asleep");
+	public static final MutableText WRONG_DIMENSION = new TranslatableText("item.balancedrecall.sleeping_mat.wrong_dimension");
+	public static final MutableText NOT_POSSIBLE = new TranslatableText("sleep.not_possible");
     public static final Text NOT_POSSIBLE_NOW = PlayerEntity.SleepFailureReason.NOT_POSSIBLE_NOW.getMessage();
     public static final Text NOT_SAFE = PlayerEntity.SleepFailureReason.NOT_SAFE.getMessage();
 
@@ -52,7 +53,7 @@ public class SleepingMat extends Item {
             user.sendMessage(ALREADY_ASLEEP, false);
             return TypedActionResult.pass(stack);
 
-        } else if (!world.getDimension().natural()) {
+        } else if (!world.getDimension().isNatural()) {
             // Wrong dimension
             user.sendMessage(WRONG_DIMENSION, false);
             return TypedActionResult.pass(stack);

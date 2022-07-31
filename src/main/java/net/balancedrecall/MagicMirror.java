@@ -17,7 +17,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
-import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
@@ -98,7 +98,7 @@ public class MagicMirror extends Item {
 
                 if ( !isInterdimensional && serverPlayer.getWorld() != targetWorld) {
                     // This mirror is too weak to cross the veil between worlds! Maybe a rare nether metal could help...
-                    player.sendMessage(Text.translatable("balancedrecall.fail_cross_dimension"), false);
+                    player.sendMessage(new TranslatableText("balancedrecall.fail_cross_dimension"), false);
                     return stack;
                 }
 
@@ -108,7 +108,7 @@ public class MagicMirror extends Item {
 
             } else {
                 // You have no home bed or charged respawn anchor, or it was obstructed.
-                player.sendMessage(Text.translatable("block.minecraft.spawn.not_valid"), false);
+                player.sendMessage(new TranslatableText("block.minecraft.spawn.not_valid"), false);
                 teleportToWorldSpawn(player, serverPlayer);
             }
         } else {
@@ -139,7 +139,7 @@ public class MagicMirror extends Item {
     private void teleportToWorldSpawn(PlayerEntity player, ServerPlayerEntity serverPlayer) {
         if (!isInterdimensional && serverPlayer.getWorld().getRegistryKey() != ServerWorld.OVERWORLD) {
             // This mirror is too weak to cross the veil between worlds! Maybe a rare nether metal could help...
-            player.sendMessage(Text.translatable("balancedrecall.fail_cross_dimension"), false);
+            player.sendMessage(new TranslatableText("balancedrecall.fail_cross_dimension"), false);
             return;
         }
 
