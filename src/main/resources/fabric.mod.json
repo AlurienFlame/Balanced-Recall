@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "balancedrecall",
-  "version": "1.0.0",
+  "version": "1.0.3",
 
   "name": "Balanced Recall",
   "description": "Mirrors and a mat",
@@ -30,9 +30,9 @@
   ],
 
   "depends": {
-    "fabricloader": ">=0.11.3",
+    "fabricloader": ">=0.14.21",
     "fabric": "*",
-    "minecraft": "1.19.*",
+    "minecraft": ">=1.20",
     "java": ">=17"
   },
   "suggests": {
