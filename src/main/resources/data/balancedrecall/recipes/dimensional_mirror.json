@@ -1,15 +1,15 @@
 {
-    "type": "minecraft:crafting_shapeless",
-    "category": "equipment",
-    "ingredients": [
-        {
-            "item": "balancedrecall:magic_mirror"
-        },
-        {
-            "item": "minecraft:netherite_ingot"
-        }
-    ],
+    "type": "minecraft:smithing_transform",
+    "addition": {
+      "item": "minecraft:netherite_ingot"
+    },
+    "base": {
+      "item": "balancedrecall:magic_mirror"
+    },
     "result": {
-        "item": "balancedrecall:dimensional_mirror"
+      "item": "balancedrecall:dimensional_mirror"
+    },
+    "template": {
+      "item": "minecraft:netherite_upgrade_smithing_template"
     }
-}
+  }
