@@ -78,7 +78,7 @@ public class SleepingMat extends Item {
         ((MatSleepingPlayer) user).sleepOnMat(user.getBlockPos());
         
         // Skip the night
-        if (!((ServerPlayerEntity) user).getWorld().isSleepingEnabled()) {
+        if (!((ServerPlayerEntity) user).getServerWorld().isSleepingEnabled()) {
             user.sendMessage(NOT_POSSIBLE, false);
         }
         ((ServerWorld) world).updateSleepingPlayers();

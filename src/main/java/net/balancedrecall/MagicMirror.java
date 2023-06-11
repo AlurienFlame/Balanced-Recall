@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 
 import net.minecraft.block.BedBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.RespawnAnchorBlock;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -12,6 +13,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsage;
+import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -75,19 +77,26 @@ public class MagicMirror extends Item {
 
             // Find respawn position
             // PlayerEntity.findRespawnPosition exhausts respawn anchor charges, which is undesirable, so instead we replicate its functionality directly
-            Block respawnBlock = targetWorld.getBlockState(spawnpoint).getBlock();
+            BlockState respawnBlockState = targetWorld.getBlockState(spawnpoint);
+            Block respawnBlock = respawnBlockState.getBlock();
             Optional<Vec3d> respawnPosition = Optional.empty();
 
             if (respawnBlock instanceof RespawnAnchorBlock) {
                 respawnPosition = RespawnAnchorBlock.findRespawnPosition(EntityType.PLAYER, targetWorld, spawnpoint);
 
             } else if (respawnBlock instanceof BedBlock) {
-                respawnPosition = BedBlock.findWakeUpPosition(EntityType.PLAYER, targetWorld, spawnpoint, serverPlayer.getSpawnAngle());
+                respawnPosition = BedBlock.findWakeUpPosition(
+                    EntityType.PLAYER,
+                    targetWorld,
+                    spawnpoint, 
+                    respawnBlockState.get(BedBlock.FACING), 
+                    serverPlayer.getSpawnAngle()
+                );
 
             } else if (serverPlayer.isSpawnForced()){
                 // Spawnpoint set by /spawnpoint command or equivalent
-                boolean footBlockClear = respawnBlock.canMobSpawnInside();
-			    boolean headBlockClear = targetWorld.getBlockState(spawnpoint.up()).getBlock().canMobSpawnInside();
+                boolean footBlockClear = respawnBlock.canMobSpawnInside(respawnBlockState);
+			    boolean headBlockClear = targetWorld.getBlockState(spawnpoint.up()).getBlock().canMobSpawnInside(respawnBlockState);
 			    if (footBlockClear && headBlockClear) {
                     respawnPosition = Optional.of(new Vec3d((double)spawnpoint.getX() + 0.5D, (double)spawnpoint.getY() + 0.1D, (double)spawnpoint.getZ() + 0.5D));
                 }
@@ -147,5 +156,10 @@ public class MagicMirror extends Item {
         BlockPos worldSpawn = overworld.getSpawnPos();
         serverPlayer.teleport(overworld, worldSpawn.getX(), worldSpawn.getY(), worldSpawn.getZ(), serverPlayer.getSpawnAngle(), 0.5F);
         overworld.playSound(null, worldSpawn, SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.PLAYERS, 0.4f, 1f);
+    }
+
+    @Override
+    public boolean canRepair(ItemStack stack, ItemStack ingredient) {
+        return ingredient.isOf(Items.ENDER_PEARL) || super.canRepair(stack, ingredient);
     }
 }
