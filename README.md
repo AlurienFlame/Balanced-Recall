@@ -9,21 +9,21 @@ This mod requires [Fabric](https://fabricmc.net/) and the [Fabric API](https://w
 
 **Magic Mirror**
 
-![](https://github.com/AlurienFlame/Balanced-Recall/blob/master/images/magic_mirror_crafting.png)
+![Magic Mirror recipe](https://github.com/AlurienFlame/Balanced-Recall/blob/1.20/images/magic_mirror_crafting.png)
 
-Using the magic mirror will teleport you to your spawnpoint from anywhere in the same dimension. It has 256 charges, and can be recharged at a smithing table with an ender pearl. If it runs out of charges, rather than breaking, it will simply cease to function until recharged.
+Using the magic mirror will teleport you to your spawnpoint from anywhere in the same dimension. It has 256 charges, and can be repaired with an ender pearl. If it runs out of charges, rather than breaking, it will simply cease to function until recharged.
 
 
 **Dimensional Mirror**
 
-![](https://github.com/AlurienFlame/Balanced-Recall/blob/master/images/dimensional_mirror_crafting.png)
+![Dimensional Mirror recipe](https://github.com/AlurienFlame/Balanced-Recall/blob/1.20/images/dimensional_mirror_crafting.png)
 
 The dimensional mirror is identical to the magic mirror, except it has twice the charges and can travel between dimensions.
 
 
 **Sleeping Mat**
 
-![](https://github.com/AlurienFlame/Balanced-Recall/blob/master/images/sleeping_mat_crafting.png)
+![Sleeping Mat recipe](https://github.com/AlurienFlame/Balanced-Recall/blob/1.20/images/sleeping_mat_crafting.png)
 
 The sleeping mat allows you to skip the night without setting your spawn. Be warned, though, sleeping on this rough straw-padded bamboo mat is not enough to ward off phantoms. The sleeping mat has 128 uses and cannot be repaired.
 
@@ -38,4 +38,3 @@ The sleeping mat allows you to skip the night without setting your spawn. Be war
     - Set dimensional mirror use time
     - Set dimensional mirror cooldown time
     - Toggle sleeping mat resetting phantom timer
-    
