@@ -27,6 +27,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+// TODO: Trigger recipe unlock when player gets diamond, blue ice, or ender eye
 public class MagicMirror extends Item {
     boolean isInterdimensional;
 

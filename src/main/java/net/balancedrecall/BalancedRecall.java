@@ -16,7 +16,7 @@ public class BalancedRecall implements ModInitializer {
 
     // Items
     public static final Item MAGIC_MIRROR = new MagicMirror(new FabricItemSettings().maxDamage(256));
-    public static final Item DIMENSIONAL_MIRROR = new DimensionalMirror(new FabricItemSettings().maxDamage(512));
+    public static final Item DIMENSIONAL_MIRROR = new DimensionalMirror(new FabricItemSettings().maxDamage(512).fireproof());
     public static final Item SLEEPING_MAT = new SleepingMat(new FabricItemSettings().maxDamage(128));
 
     // Stats
