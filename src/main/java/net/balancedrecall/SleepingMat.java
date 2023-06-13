@@ -88,6 +88,7 @@ public class SleepingMat extends Item {
         user.incrementStat(BalancedRecall.MAT_SLEEPS);
         
         // Damage durability
+        // BUG: When used on 1 durability, item breaks, but player still tries to sleep briefly before cancelling
         stack.damage(1, user, (Consumer<LivingEntity>)((p) -> {
             p.sendToolBreakStatus(user.getActiveHand());
         }));
