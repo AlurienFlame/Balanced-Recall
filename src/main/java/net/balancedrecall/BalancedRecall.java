@@ -18,6 +18,7 @@ public class BalancedRecall implements ModInitializer {
     public static final Item MAGIC_MIRROR = new MagicMirror(new FabricItemSettings().maxDamage(256));
     public static final Item DIMENSIONAL_MIRROR = new DimensionalMirror(new FabricItemSettings().maxDamage(512).fireproof());
     public static final Item SLEEPING_MAT = new SleepingMat(new FabricItemSettings().maxDamage(128));
+    public static final Item ENCHANTED_HOURGLASS = new EnchantedHourglass(new FabricItemSettings());
 
     // Stats
     public static final Identifier RECALLS = new Identifier(MODID, "recalls");
@@ -29,11 +30,13 @@ public class BalancedRecall implements ModInitializer {
         Registry.register(Registries.ITEM, new Identifier(MODID, "magic_mirror"), MAGIC_MIRROR);
         Registry.register(Registries.ITEM, new Identifier(MODID, "dimensional_mirror"), DIMENSIONAL_MIRROR);
         Registry.register(Registries.ITEM, new Identifier(MODID, "sleeping_mat"), SLEEPING_MAT);
+        Registry.register(Registries.ITEM, new Identifier(MODID, "enchanted_hourglass"), ENCHANTED_HOURGLASS);
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(content -> {
             content.add(MAGIC_MIRROR);
             content.add(DIMENSIONAL_MIRROR);
             content.add(SLEEPING_MAT);
+            content.add(ENCHANTED_HOURGLASS);
         });
 
         // Stats
