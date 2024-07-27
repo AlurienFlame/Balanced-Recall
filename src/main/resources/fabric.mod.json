@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "balancedrecall",
-  "version": "1.0.6",
+  "version": "${version}",
 
   "name": "Balanced Recall",
   "description": "Mirrors and a mat",
