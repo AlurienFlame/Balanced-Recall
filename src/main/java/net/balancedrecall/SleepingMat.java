@@ -28,7 +28,7 @@ public class SleepingMat extends Item {
     public static final Text NOT_POSSIBLE_NOW = PlayerEntity.SleepFailureReason.NOT_POSSIBLE_NOW.getMessage();
     public static final Text NOT_SAFE = PlayerEntity.SleepFailureReason.NOT_SAFE.getMessage();
 
-    SleepingMat(Settings settings) {
+    SleepingMat(net.minecraft.item.Item.Settings settings) {
         super(settings);
     }
 
@@ -82,17 +82,15 @@ public class SleepingMat extends Item {
             user.sendMessage(NOT_POSSIBLE, false);
         }
         ((ServerWorld) world).updateSleepingPlayers();
-        
+
         // Update statistics
         user.incrementStat(Stats.USED.getOrCreateStat(this));
         user.incrementStat(BalancedRecall.MAT_SLEEPS);
-        
+
         // Damage durability
         // BUG: When used on 1 durability, item breaks, but player still tries to sleep briefly before cancelling
-        stack.damage(1, user, (Consumer<LivingEntity>)((p) -> {
-            p.sendToolBreakStatus(user.getActiveHand());
-        }));
-        
+        stack.damage(1, user, LivingEntity.getSlotForHand(user.getActiveHand()));
+
         return TypedActionResult.consume(stack);
     }
 

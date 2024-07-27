@@ -31,7 +31,7 @@ import net.minecraft.world.World;
 public class MagicMirror extends Item {
     boolean isInterdimensional;
 
-    public MagicMirror(Settings settings) {
+    public MagicMirror(net.minecraft.item.Item.Settings settings) {
         super(settings);
         isInterdimensional = false;
     }
@@ -131,9 +131,7 @@ public class MagicMirror extends Item {
         player.incrementStat(Stats.USED.getOrCreateStat(this));
 
         // Damage durability
-        stack.damage(1, (LivingEntity)player, (Consumer<LivingEntity>)((p) -> {
-            p.sendToolBreakStatus(player.getActiveHand());
-        }));
+        stack.damage(1, (LivingEntity)player, LivingEntity.getSlotForHand(player.getActiveHand()));
 
         // Put on cooldown
         player.getItemCooldownManager().set(this, 20);
@@ -142,7 +140,7 @@ public class MagicMirror extends Item {
     }
 
     @Override
-    public int getMaxUseTime(ItemStack stack) {
+    public int getMaxUseTime(ItemStack stack, LivingEntity user) {
         return 20;
     }
 
