@@ -2,7 +2,7 @@
     "parent": "balancedrecall:craft_sleeping_mat",
     "display": {
         "icon": {
-            "item": "balancedrecall:sleeping_mat"
+            "id": "balancedrecall:sleeping_mat"
         },
         "title": {
             "translate": "advancements.balancedrecall.use_sleeping_mat.title"

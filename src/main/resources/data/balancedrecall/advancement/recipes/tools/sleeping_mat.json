@@ -30,6 +30,5 @@
       "recipes": [
         "balancedrecall:sleeping_mat"
       ]
-    },
-    "sends_telemetry_event": false
+    }
   }

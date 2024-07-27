@@ -1,7 +1,11 @@
 {
     "type": "minecraft:crafting_shaped",
     "category": "equipment",
-    "pattern": [" DE", " BD", "D  "],
+    "pattern": [
+        " DE",
+        " BD",
+        "D  "
+    ],
     "key": {
         "D": {
             "item": "minecraft:diamond"
@@ -14,6 +18,6 @@
         }
     },
     "result": {
-        "item": "balancedrecall:magic_mirror"
+        "id": "balancedrecall:magic_mirror"
     }
 }

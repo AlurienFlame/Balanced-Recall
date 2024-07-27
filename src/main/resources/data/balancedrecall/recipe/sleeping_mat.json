@@ -1,7 +1,11 @@
 {
     "type": "minecraft:crafting_shaped",
     "category": "equipment",
-    "pattern": ["   ", "HHH", "BBB"],
+    "pattern": [
+        "   ",
+        "HHH",
+        "BBB"
+    ],
     "key": {
         "H": {
             "item": "minecraft:hay_block"
@@ -11,6 +15,6 @@
         }
     },
     "result": {
-        "item": "balancedrecall:sleeping_mat"
+        "id": "balancedrecall:sleeping_mat"
     }
 }

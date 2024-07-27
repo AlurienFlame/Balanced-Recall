@@ -30,6 +30,5 @@
       "recipes": [
         "balancedrecall:dimensional_mirror"
       ]
-    },
-    "sends_telemetry_event": false
+    }
   }

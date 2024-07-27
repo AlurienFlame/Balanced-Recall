@@ -2,7 +2,7 @@
     "parent": "balancedrecall:root",
     "display": {
         "icon": {
-            "item": "balancedrecall:sleeping_mat"
+            "id": "balancedrecall:sleeping_mat"
         },
         "title": {
             "translate": "advancements.balancedrecall.craft_sleeping_mat.title"
