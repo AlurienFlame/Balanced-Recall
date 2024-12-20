@@ -1,7 +1,6 @@
 package net.balancedrecall;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.LivingEntity;
@@ -12,7 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -33,7 +32,7 @@ public class SleepingMat extends Item {
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+    public ActionResult use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
 
         // ServerPlayerEntity.trySleep is where spawn is set, we need to circumvent it while taking advantage of as much vanilla code as possible
@@ -41,42 +40,45 @@ public class SleepingMat extends Item {
 
         if (world.isClient) {
             // Running on the client (bad)
-            return TypedActionResult.pass(stack);
-        } else if (!user.isAlive()) {
-            // User is dead
-            user.sendMessage(USER_DEAD, false);
-            return TypedActionResult.pass(stack);
+            return ActionResult.PASS;
+        }
+        ServerPlayerEntity serverPlayer = (ServerPlayerEntity) user;
 
-        } else if (user.isSleeping()) {
+        if (!serverPlayer.isAlive()) {
+            // User is dead
+            serverPlayer.sendMessage(USER_DEAD, false);
+            return ActionResult.PASS;
+
+        } else if (serverPlayer.isSleeping()) {
             // User is already sleeping
-            user.sendMessage(ALREADY_ASLEEP, false);
-            return TypedActionResult.pass(stack);
+            serverPlayer.sendMessage(ALREADY_ASLEEP, false);
+            return ActionResult.PASS;
 
         } else if (!world.getDimension().natural()) {
             // Wrong dimension
-            user.sendMessage(WRONG_DIMENSION, false);
-            return TypedActionResult.pass(stack);
+            serverPlayer.sendMessage(WRONG_DIMENSION, false);
+            return ActionResult.PASS;
 
         } else if (world.isDay()) {
             // It's daytime
-            user.sendMessage(NOT_POSSIBLE_NOW, false);
-            return TypedActionResult.pass(stack);
-            
-        } else if (!user.isCreative()) {
+            serverPlayer.sendMessage(NOT_POSSIBLE_NOW, false);
+            return ActionResult.PASS;
+
+        } else if (!serverPlayer.isCreative()) {
             // Hostile entities too close
-            Vec3d pos = user.getPos();
+            Vec3d pos = serverPlayer.getPos();
             List<HostileEntity> list = world.getEntitiesByClass(HostileEntity.class, new Box(pos.getX() - 8.0D, pos.getY() - 5.0D, pos.getZ() - 8.0D, pos.getX() + 8.0D, pos.getY() + 5.0D, pos.getZ() + 8.0D), (hostileEntity) -> {
-                return hostileEntity.isAngryAt(user);
+                return hostileEntity.isAngryAt(serverPlayer.getServerWorld(), serverPlayer);
             });
             if (!list.isEmpty()) {
-                user.sendMessage(NOT_SAFE, false);
-                return TypedActionResult.pass(stack);
+                serverPlayer.sendMessage(NOT_SAFE, false);
+                return ActionResult.PASS;
             }
         }
 
         // Go to sleep
         ((MatSleepingPlayer) user).sleepOnMat(user.getBlockPos());
-        
+
         // Skip the night
         if (!((ServerPlayerEntity) user).getServerWorld().isSleepingEnabled()) {
             user.sendMessage(NOT_POSSIBLE, false);
@@ -91,7 +93,7 @@ public class SleepingMat extends Item {
         // BUG: When used on 1 durability, item breaks, but player still tries to sleep briefly before cancelling
         stack.damage(1, user, LivingEntity.getSlotForHand(user.getActiveHand()));
 
-        return TypedActionResult.consume(stack);
+        return ActionResult.CONSUME;
     }
 
     // For checking that player is sleeping on a mat, instead of just sleeping randomly for no reason

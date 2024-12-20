@@ -14,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsage;
 import net.minecraft.item.Items;
+import net.minecraft.item.consume.UseAction;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -21,10 +22,10 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.UseAction;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
 
 // TODO: Trigger recipe unlock when player gets diamond, blue ice, or ender eye
@@ -43,14 +44,14 @@ public class MagicMirror extends Item {
 
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity playerEntity, Hand hand) {
+    public ActionResult use(World world, PlayerEntity playerEntity, Hand hand) {
         ItemStack stack = playerEntity.getStackInHand(hand);
         if (MagicMirror.isUsable(stack)) {
             // Use item
             return ItemUsage.consumeHeldItem(world, playerEntity, hand);
         } else {
             // Item is out of durability, don't use it
-            return TypedActionResult.pass(stack);
+            return ActionResult.PASS;
         }
     }
 
@@ -63,10 +64,12 @@ public class MagicMirror extends Item {
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
         // finishUsing runs on both the server and the client (for some reason),
         // but we only want to run this code on the server.
+        // TODO: Instead, wrap all logic that must be run only on the server side with if (world instanceof ServerWorld serverWorld). The serverWorld can be passed to those methods.
+        // TODO: Add recipes to group
         if (world.isClient()) {
             return stack;
         }
-        
+
         PlayerEntity player = (PlayerEntity) user;
         ServerPlayerEntity serverPlayer = (ServerPlayerEntity) user;
         ServerWorld targetWorld = serverPlayer.server.getWorld(serverPlayer.getSpawnPointDimension());
@@ -111,9 +114,7 @@ public class MagicMirror extends Item {
                     player.sendMessage(Text.translatable("balancedrecall.fail_cross_dimension"), false);
                     return stack;
                 }
-
-                Vec3d spawnVec = respawnPosition.get();
-                serverPlayer.teleport(targetWorld, spawnVec.getX(), spawnVec.getY(), spawnVec.getZ(), serverPlayer.getSpawnAngle(), 0.5F);
+                serverPlayer.teleportTo(serverPlayer.getRespawnTarget(false, TeleportTarget.NO_OP));
                 targetWorld.playSound(null, spawnpoint, SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.PLAYERS, 0.4f, 1f);
 
             } else {
@@ -125,7 +126,7 @@ public class MagicMirror extends Item {
             // You don't have a spawnpoint, teleporting to world spawn instead
             teleportToWorldSpawn(player, serverPlayer);
         }
-        
+
         // Update statistics
         player.incrementStat(BalancedRecall.RECALLS);
         player.incrementStat(Stats.USED.getOrCreateStat(this));
@@ -134,7 +135,8 @@ public class MagicMirror extends Item {
         stack.damage(1, (LivingEntity)player, LivingEntity.getSlotForHand(player.getActiveHand()));
 
         // Put on cooldown
-        player.getItemCooldownManager().set(this, 20);
+
+        player.getItemCooldownManager().set(stack, 20);
 
         return stack;
     }
@@ -153,12 +155,7 @@ public class MagicMirror extends Item {
 
         ServerWorld overworld = serverPlayer.getServer().getWorld(ServerWorld.OVERWORLD);
         BlockPos worldSpawn = overworld.getSpawnPos();
-        serverPlayer.teleport(overworld, worldSpawn.getX(), worldSpawn.getY(), worldSpawn.getZ(), serverPlayer.getSpawnAngle(), 0.5F);
+        serverPlayer.teleportTo(serverPlayer.getRespawnTarget(false, TeleportTarget.NO_OP));
         overworld.playSound(null, worldSpawn, SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.PLAYERS, 0.4f, 1f);
-    }
-
-    @Override
-    public boolean canRepair(ItemStack stack, ItemStack ingredient) {
-        return ingredient.isOf(Items.ENDER_PEARL) || super.canRepair(stack, ingredient);
     }
 }

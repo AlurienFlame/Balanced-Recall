@@ -1,14 +1,8 @@
 {
     "type": "minecraft:smithing_transform",
-    "addition": {
-        "item": "minecraft:netherite_ingot"
-    },
-    "base": {
-        "item": "balancedrecall:magic_mirror"
-    },
-    "template": {
-        "item": "minecraft:netherite_upgrade_smithing_template"
-    },
+    "addition": "minecraft:netherite_ingot",
+    "base": "balancedrecall:magic_mirror",
+    "template": "minecraft:netherite_upgrade_smithing_template",
     "result": {
         "id": "balancedrecall:dimensional_mirror"
     }

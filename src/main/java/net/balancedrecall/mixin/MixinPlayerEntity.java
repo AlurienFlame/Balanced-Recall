@@ -14,6 +14,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.ItemCooldownManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -44,17 +45,16 @@ public abstract class MixinPlayerEntity extends LivingEntity implements MatSleep
 	}
 
 
-    @Inject(method = "applyDamage(Lnet/minecraft/entity/damage/DamageSource;F)V", at = @At("HEAD"))
-    protected void applyDamage(DamageSource source, float amount, CallbackInfo ci) {
-        if (!this.isInvulnerableTo(source)) {
+    @Inject(method = "applyDamage(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/entity/damage/DamageSource;F)V", at = @At("HEAD"))
+    protected void applyDamage(ServerWorld world, DamageSource source, float amount, CallbackInfo info) {
+        if (!this.isInvulnerableTo(world, source)) {
             // Interrupt usage
             ItemStack stack = this.getActiveItem();
             if (stack.getItem() == BalancedRecall.MAGIC_MIRROR || stack.getItem() == BalancedRecall.DIMENSIONAL_MIRROR) {
                 this.stopUsingItem();
             }
             // Start cooldown
-            this.getItemCooldownManager().set(BalancedRecall.MAGIC_MIRROR, 20);
-            this.getItemCooldownManager().set(BalancedRecall.DIMENSIONAL_MIRROR, 20);
+            this.getItemCooldownManager().set(stack, 20);
         }
     }
 }

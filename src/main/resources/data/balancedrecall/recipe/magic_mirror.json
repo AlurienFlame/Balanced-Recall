@@ -7,15 +7,9 @@
         "D  "
     ],
     "key": {
-        "D": {
-            "item": "minecraft:diamond"
-        },
-        "E": {
-            "item": "minecraft:ender_eye"
-        },
-        "B": {
-            "item": "minecraft:blue_ice"
-        }
+        "D": "minecraft:diamond",
+        "E": "minecraft:ender_eye",
+        "B": "minecraft:blue_ice"
     },
     "result": {
         "id": "balancedrecall:magic_mirror"

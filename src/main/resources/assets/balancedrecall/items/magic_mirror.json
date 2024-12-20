@@ -1,0 +1,52 @@
+{
+    "model": {
+        "type": "minecraft:condition",
+        "property": "minecraft:broken",
+        "on_true": {
+            "type": "minecraft:model",
+            "model": "balancedrecall:item/magic_mirror_broken"
+        },
+        "on_false": {
+            "type": "minecraft:range_dispatch",
+            "property": "minecraft:use_duration",
+            "scale": 0.05,
+            "entries": [
+                {
+                    "threshold": 0,
+                    "model": {
+                        "type": "minecraft:model",
+                        "model": "balancedrecall:item/magic_mirror_using_1"
+                    }
+                },
+                {
+                    "threshold": 0.2,
+                    "model": {
+                        "type": "minecraft:model",
+                        "model": "balancedrecall:item/magic_mirror_using_2"
+                    }
+                },
+                {
+                    "threshold": 0.4,
+                    "model": {
+                        "type": "minecraft:model",
+                        "model": "balancedrecall:item/magic_mirror_using_3"
+                    }
+                },
+                {
+                    "threshold": 0.6,
+                    "model": {
+                        "type": "minecraft:model",
+                        "model": "balancedrecall:item/magic_mirror_using_4"
+                    }
+                },
+                {
+                    "threshold": 0.8,
+                    "model": {
+                        "type": "minecraft:model",
+                        "model": "balancedrecall:item/magic_mirror_using_5"
+                    }
+                }
+            ]
+        }
+    }
+}
