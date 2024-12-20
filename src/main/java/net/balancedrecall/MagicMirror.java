@@ -1,19 +1,18 @@
 package net.balancedrecall;
 
 import java.util.Optional;
-import java.util.function.Consumer;
 
 import net.minecraft.block.BedBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.RespawnAnchorBlock;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsage;
-import net.minecraft.item.Items;
 import net.minecraft.item.consume.UseAction;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -135,8 +134,7 @@ public class MagicMirror extends Item {
         stack.damage(1, (LivingEntity)player, LivingEntity.getSlotForHand(player.getActiveHand()));
 
         // Put on cooldown
-
-        player.getItemCooldownManager().set(stack, 20);
+        player.getItemCooldownManager().set(stack, stack.getItem().getComponents().get(DataComponentTypes.USE_COOLDOWN).getCooldownTicks());
 
         return stack;
     }

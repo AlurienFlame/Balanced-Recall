@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import net.balancedrecall.BalancedRecall;
 import net.balancedrecall.MatSleepingPlayer;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -29,14 +30,12 @@ public abstract class MixinPlayerEntity extends LivingEntity implements MatSleep
     // ServerEntity.trySleep, which sets spawn (we don't want that)
     @Shadow
     private int sleepTimer;
-    
+
     @Override
     public void sleepOnMat(BlockPos pos) {
         super.sleep(pos);
         this.sleepTimer = 0;
     }
-    
-    // Interrupt magic mirror usage when taking damage
 
     @Shadow
     public ItemCooldownManager getItemCooldownManager() {
@@ -44,7 +43,7 @@ public abstract class MixinPlayerEntity extends LivingEntity implements MatSleep
 		return new ItemCooldownManager();
 	}
 
-
+    // Interrupt magic mirror usage when taking damage
     @Inject(method = "applyDamage(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/entity/damage/DamageSource;F)V", at = @At("HEAD"))
     protected void applyDamage(ServerWorld world, DamageSource source, float amount, CallbackInfo info) {
         if (!this.isInvulnerableTo(world, source)) {
@@ -52,9 +51,10 @@ public abstract class MixinPlayerEntity extends LivingEntity implements MatSleep
             ItemStack stack = this.getActiveItem();
             if (stack.getItem() == BalancedRecall.MAGIC_MIRROR || stack.getItem() == BalancedRecall.DIMENSIONAL_MIRROR) {
                 this.stopUsingItem();
+                // Start cooldown
+                this.getItemCooldownManager().set(stack, stack.getItem().getComponents().get(DataComponentTypes.USE_COOLDOWN).getCooldownTicks());
             }
-            // Start cooldown
-            this.getItemCooldownManager().set(stack, 20);
+
         }
     }
 }

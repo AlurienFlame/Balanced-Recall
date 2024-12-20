@@ -13,16 +13,16 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 
+// TODO: config screen (https://docs.fabricmc.net/develop/rendering/gui/custom-screens)
 public class BalancedRecall implements ModInitializer {
     public static final String MODID = "balancedrecall";
 
     // Items
-    // TODO: Experiment with useCooldown setting
     private static final RegistryKey<Item> magic_mirror_key = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MODID, "magic_mirror"));
-    public static final Item MAGIC_MIRROR = new MagicMirror(new Item.Settings().registryKey(magic_mirror_key).maxDamage(256).repairable(Items.ENDER_PEARL));
+    public static final Item MAGIC_MIRROR = new MagicMirror(new Item.Settings().registryKey(magic_mirror_key).maxDamage(256).repairable(Items.ENDER_PEARL).useCooldown(1));
 
     private static final RegistryKey<Item> dimensional_mirror_key = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MODID, "dimensional_mirror"));
-    public static final Item DIMENSIONAL_MIRROR = new DimensionalMirror(new Item.Settings().registryKey(dimensional_mirror_key).maxDamage(512).fireproof().repairable(Items.ENDER_PEARL));
+    public static final Item DIMENSIONAL_MIRROR = new DimensionalMirror(new Item.Settings().registryKey(dimensional_mirror_key).maxDamage(512).fireproof().repairable(Items.ENDER_PEARL).useCooldown(1));
 
     private static final RegistryKey<Item> sleeping_mat_key = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MODID, "sleeping_mat"));
     public static final Item SLEEPING_MAT = new SleepingMat(new Item.Settings().registryKey(sleeping_mat_key).maxDamage(128));
