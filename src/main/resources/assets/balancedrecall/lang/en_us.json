@@ -21,5 +21,6 @@
     "advancements.balancedrecall.craft_sleeping_mat.title": "Better Than Nothing",
     "advancements.balancedrecall.craft_sleeping_mat.description": "Craft a Sleeping Mat",
     "advancements.balancedrecall.use_sleeping_mat.title": "Not so Sweet Dreams",
-    "advancements.balancedrecall.use_sleeping_mat.description": "Sleep on a Sleeping Mat to avoid setting your respawn point"
+    "advancements.balancedrecall.use_sleeping_mat.description": "Sleep on a Sleeping Mat to avoid setting your respawn point",
+    "balancedrecall.menu.title": "Balanced Recall"
 }

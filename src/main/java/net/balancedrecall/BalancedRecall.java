@@ -13,7 +13,6 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 
-// TODO: config screen (https://docs.fabricmc.net/develop/rendering/gui/custom-screens)
 public class BalancedRecall implements ModInitializer {
     public static final String MODID = "balancedrecall";
 

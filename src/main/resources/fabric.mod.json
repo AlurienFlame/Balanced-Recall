@@ -18,9 +18,8 @@
 
   "environment": "*",
   "entrypoints": {
-    "main": [
-      "net.balancedrecall.BalancedRecall"
-    ]
+    "main": [ "net.balancedrecall.BalancedRecall" ],
+    "modmenu": [ "net.balancedrecall.ModMenuIntegration" ]
   },
   "mixins": [
     "balancedrecall.mixins.json"
