@@ -13,6 +13,30 @@
         },
         "trigger": "minecraft:inventory_changed"
       },
+      "has_blue_ice": {
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "minecraft:blue_ice"
+              ]
+            }
+          ]
+        },
+        "trigger": "minecraft:inventory_changed"
+      },
+      "has_ender_eye": {
+        "conditions": {
+          "items": [
+            {
+              "items": [
+                "minecraft:ender_eye"
+              ]
+            }
+          ]
+        },
+        "trigger": "minecraft:inventory_changed"
+      },
       "has_the_recipe": {
         "conditions": {
           "recipe": "balancedrecall:magic_mirror"
@@ -23,6 +47,8 @@
     "requirements": [
       [
         "has_diamond",
+        "has_blue_ice",
+        "has_ender_eye",
         "has_the_recipe"
       ]
     ],
