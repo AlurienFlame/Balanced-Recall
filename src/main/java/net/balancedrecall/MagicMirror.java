@@ -63,13 +63,10 @@ public class MagicMirror extends Item {
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
         // finishUsing runs on both the server and the client (for some reason),
         // but we only want to run this code on the server.
-        // TODO: Instead, wrap all logic that must be run only on the server side with if (world instanceof ServerWorld serverWorld). The serverWorld can be passed to those methods.
-        // TODO: Add recipes to group
-        if (world.isClient()) {
+        if (!(world instanceof ServerWorld)) {
             return stack;
         }
 
-        PlayerEntity player = (PlayerEntity) user;
         ServerPlayerEntity serverPlayer = (ServerPlayerEntity) user;
         ServerWorld targetWorld = serverPlayer.server.getWorld(serverPlayer.getSpawnPointDimension());
 
@@ -110,7 +107,7 @@ public class MagicMirror extends Item {
 
                 if ( !isInterdimensional && serverPlayer.getWorld() != targetWorld) {
                     // This mirror is too weak to cross the veil between worlds! Maybe a rare nether metal could help...
-                    player.sendMessage(Text.translatable("balancedrecall.fail_cross_dimension"), false);
+                    serverPlayer.sendMessage(Text.translatable("balancedrecall.fail_cross_dimension"), false);
                     return stack;
                 }
                 serverPlayer.teleportTo(serverPlayer.getRespawnTarget(false, TeleportTarget.NO_OP));
@@ -118,23 +115,22 @@ public class MagicMirror extends Item {
 
             } else {
                 // You have no home bed or charged respawn anchor, or it was obstructed.
-                player.sendMessage(Text.translatable("block.minecraft.spawn.not_valid"), false);
-                teleportToWorldSpawn(player, serverPlayer);
+                teleportToWorldSpawn(serverPlayer);
             }
         } else {
             // You don't have a spawnpoint, teleporting to world spawn instead
-            teleportToWorldSpawn(player, serverPlayer);
+            teleportToWorldSpawn(serverPlayer);
         }
 
         // Update statistics
-        player.incrementStat(BalancedRecall.RECALLS);
-        player.incrementStat(Stats.USED.getOrCreateStat(this));
+        serverPlayer.incrementStat(BalancedRecall.RECALLS);
+        serverPlayer.incrementStat(Stats.USED.getOrCreateStat(this));
 
         // Damage durability
-        stack.damage(1, (LivingEntity)player, LivingEntity.getSlotForHand(player.getActiveHand()));
+        stack.damage(1, (LivingEntity)serverPlayer, LivingEntity.getSlotForHand(serverPlayer.getActiveHand()));
 
         // Put on cooldown
-        player.getItemCooldownManager().set(stack, stack.getItem().getComponents().get(DataComponentTypes.USE_COOLDOWN).getCooldownTicks());
+        serverPlayer.getItemCooldownManager().set(stack, stack.getItem().getComponents().get(DataComponentTypes.USE_COOLDOWN).getCooldownTicks());
 
         return stack;
     }
@@ -144,10 +140,10 @@ public class MagicMirror extends Item {
         return 20;
     }
 
-    private void teleportToWorldSpawn(PlayerEntity player, ServerPlayerEntity serverPlayer) {
+    private void teleportToWorldSpawn(ServerPlayerEntity serverPlayer) {
         if (!isInterdimensional && serverPlayer.getWorld().getRegistryKey() != ServerWorld.OVERWORLD) {
             // This mirror is too weak to cross the veil between worlds! Maybe a rare nether metal could help...
-            player.sendMessage(Text.translatable("balancedrecall.fail_cross_dimension"), false);
+            serverPlayer.sendMessage(Text.translatable("balancedrecall.fail_cross_dimension"), false);
             return;
         }
 

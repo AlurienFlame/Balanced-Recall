@@ -38,7 +38,7 @@ public class SleepingMat extends Item {
         // ServerPlayerEntity.trySleep is where spawn is set, we need to circumvent it while taking advantage of as much vanilla code as possible
         // We also need to make sure that time since last sleep doesn't get reset - I don't want the sleeping mat to stop phantoms from spawning
 
-        if (world.isClient) {
+        if (!(world instanceof ServerWorld)) {
             // Running on the client (bad)
             return ActionResult.PASS;
         }
@@ -77,21 +77,23 @@ public class SleepingMat extends Item {
         }
 
         // Go to sleep
-        ((MatSleepingPlayer) user).sleepOnMat(user.getBlockPos());
+        ((MatSleepingPlayer) serverPlayer).sleepOnMat(serverPlayer.getBlockPos());
 
         // Skip the night
-        if (!((ServerPlayerEntity) user).getServerWorld().isSleepingEnabled()) {
-            user.sendMessage(NOT_POSSIBLE, false);
+        if (!((ServerPlayerEntity) serverPlayer).getServerWorld().isSleepingEnabled()) {
+            serverPlayer.sendMessage(NOT_POSSIBLE, false);
         }
         ((ServerWorld) world).updateSleepingPlayers();
 
         // Update statistics
-        user.incrementStat(Stats.USED.getOrCreateStat(this));
-        user.incrementStat(BalancedRecall.MAT_SLEEPS);
+        serverPlayer.incrementStat(Stats.USED.getOrCreateStat(this));
+        serverPlayer.incrementStat(BalancedRecall.MAT_SLEEPS);
 
         // Damage durability
         // BUG: When used on 1 durability, item breaks, but player still tries to sleep briefly before cancelling
-        stack.damage(1, user, LivingEntity.getSlotForHand(user.getActiveHand()));
+        // This is caused by the way we check if sleeping is possible: checking if the player is holding a sleeping mat.
+        // Because the player stops holding the mat when it breaks, that interrupts the sleep.
+        stack.damage(1, serverPlayer, LivingEntity.getSlotForHand(serverPlayer.getActiveHand()));
 
         return ActionResult.CONSUME;
     }
