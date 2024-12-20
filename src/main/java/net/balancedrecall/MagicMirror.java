@@ -70,57 +70,13 @@ public class MagicMirror extends Item {
         ServerPlayerEntity serverPlayer = (ServerPlayerEntity) user;
         ServerWorld targetWorld = serverPlayer.server.getWorld(serverPlayer.getSpawnPointDimension());
 
-        BlockPos spawnpoint = serverPlayer.getSpawnPointPosition();
-
-        if (spawnpoint != null) {
-            // Player spawn
-
-            // Find respawn position
-            // PlayerEntity.findRespawnPosition exhausts respawn anchor charges, which is undesirable, so instead we replicate its functionality directly
-            BlockState respawnBlockState = targetWorld.getBlockState(spawnpoint);
-            Block respawnBlock = respawnBlockState.getBlock();
-            Optional<Vec3d> respawnPosition = Optional.empty();
-
-            if (respawnBlock instanceof RespawnAnchorBlock) {
-                respawnPosition = RespawnAnchorBlock.findRespawnPosition(EntityType.PLAYER, targetWorld, spawnpoint);
-
-            } else if (respawnBlock instanceof BedBlock) {
-                respawnPosition = BedBlock.findWakeUpPosition(
-                    EntityType.PLAYER,
-                    targetWorld,
-                    spawnpoint, 
-                    respawnBlockState.get(BedBlock.FACING), 
-                    serverPlayer.getSpawnAngle()
-                );
-
-            } else if (serverPlayer.isSpawnForced()){
-                // Spawnpoint set by /spawnpoint command or equivalent
-                boolean footBlockClear = respawnBlock.canMobSpawnInside(respawnBlockState);
-			    boolean headBlockClear = targetWorld.getBlockState(spawnpoint.up()).getBlock().canMobSpawnInside(respawnBlockState);
-			    if (footBlockClear && headBlockClear) {
-                    respawnPosition = Optional.of(new Vec3d((double)spawnpoint.getX() + 0.5D, (double)spawnpoint.getY() + 0.1D, (double)spawnpoint.getZ() + 0.5D));
-                }
-            }
-
-            // Teleport to respawn position
-            if (respawnPosition.isPresent()) {
-
-                if ( !isInterdimensional && serverPlayer.getWorld() != targetWorld) {
-                    // This mirror is too weak to cross the veil between worlds! Maybe a rare nether metal could help...
-                    serverPlayer.sendMessage(Text.translatable("balancedrecall.fail_cross_dimension"), false);
-                    return stack;
-                }
-                serverPlayer.teleportTo(serverPlayer.getRespawnTarget(false, TeleportTarget.NO_OP));
-                targetWorld.playSound(null, spawnpoint, SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.PLAYERS, 0.4f, 1f);
-
-            } else {
-                // You have no home bed or charged respawn anchor, or it was obstructed.
-                teleportToWorldSpawn(serverPlayer);
-            }
-        } else {
-            // You don't have a spawnpoint, teleporting to world spawn instead
-            teleportToWorldSpawn(serverPlayer);
+        if ( !isInterdimensional && serverPlayer.getWorld() != targetWorld) {
+            // This mirror is too weak to cross the veil between worlds! Maybe a rare nether metal could help...
+            serverPlayer.sendMessage(Text.translatable("balancedrecall.fail_cross_dimension"), false);
+            return stack;
         }
+        serverPlayer.teleportTo(serverPlayer.getRespawnTarget(false, TeleportTarget.NO_OP));
+        targetWorld.playSound(null, serverPlayer.getBlockPos(), SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.PLAYERS, 0.4f, 1f);
 
         // Update statistics
         serverPlayer.incrementStat(BalancedRecall.RECALLS);
@@ -138,18 +94,5 @@ public class MagicMirror extends Item {
     @Override
     public int getMaxUseTime(ItemStack stack, LivingEntity user) {
         return 20;
-    }
-
-    private void teleportToWorldSpawn(ServerPlayerEntity serverPlayer) {
-        if (!isInterdimensional && serverPlayer.getWorld().getRegistryKey() != ServerWorld.OVERWORLD) {
-            // This mirror is too weak to cross the veil between worlds! Maybe a rare nether metal could help...
-            serverPlayer.sendMessage(Text.translatable("balancedrecall.fail_cross_dimension"), false);
-            return;
-        }
-
-        ServerWorld overworld = serverPlayer.getServer().getWorld(ServerWorld.OVERWORLD);
-        BlockPos worldSpawn = overworld.getSpawnPos();
-        serverPlayer.teleportTo(serverPlayer.getRespawnTarget(false, TeleportTarget.NO_OP));
-        overworld.playSound(null, worldSpawn, SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.PLAYERS, 0.4f, 1f);
     }
 }
