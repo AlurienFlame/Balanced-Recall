@@ -21,7 +21,7 @@ public class BalancedRecallConfig {
     static File configFile = configPath.toFile();
 
     // Configs
-    public JsonObject config;
+    public static JsonObject config;
 
     // Constructor creates the config file if it doesn't exist
     public BalancedRecallConfig() {
@@ -64,7 +64,7 @@ public class BalancedRecallConfig {
     }
 
     // Write the current config to the file.
-    public void write() {
+    public static void write() {
         try {
             FileWriter writer = new FileWriter(configFile);
             new GsonBuilder().setPrettyPrinting().create().toJson(config, writer);

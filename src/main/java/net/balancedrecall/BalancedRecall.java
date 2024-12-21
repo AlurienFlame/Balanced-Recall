@@ -16,8 +16,6 @@ import net.minecraft.registry.RegistryKeys;
 public class BalancedRecall implements ModInitializer {
     public static final String MODID = "balancedrecall";
 
-    public static final BalancedRecallConfig config = new BalancedRecallConfig();
-
     // Items
     private static final RegistryKey<Item> magic_mirror_key = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MODID, "magic_mirror"));
     public static final Item MAGIC_MIRROR = new MagicMirror(new Item.Settings().registryKey(magic_mirror_key).maxDamage(256).repairable(Items.ENDER_PEARL).useCooldown(1));
