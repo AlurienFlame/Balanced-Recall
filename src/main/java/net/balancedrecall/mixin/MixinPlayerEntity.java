@@ -46,13 +46,15 @@ public abstract class MixinPlayerEntity extends LivingEntity implements MatSleep
     // Interrupt magic mirror usage when taking damage
     @Inject(method = "applyDamage(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/entity/damage/DamageSource;F)V", at = @At("HEAD"))
     protected void applyDamage(ServerWorld world, DamageSource source, float amount, CallbackInfo info) {
-        if (!this.isInvulnerableTo(world, source)) {
+        if (BalancedRecall.config.getBoolean("take_damage_interrupts_recall") && !this.isInvulnerableTo(world, source)) {
             // Interrupt usage
             ItemStack stack = this.getActiveItem();
             if (stack.getItem() == BalancedRecall.MAGIC_MIRROR || stack.getItem() == BalancedRecall.DIMENSIONAL_MIRROR) {
                 this.stopUsingItem();
-                // Start cooldown
-                this.getItemCooldownManager().set(stack, stack.getItem().getComponents().get(DataComponentTypes.USE_COOLDOWN).getCooldownTicks());
+                if (BalancedRecall.config.getBoolean("take_damage_puts_mirror_on_cooldown")) {
+                    // Start cooldown
+                    this.getItemCooldownManager().set(stack, stack.getItem().getComponents().get(DataComponentTypes.USE_COOLDOWN).getCooldownTicks());
+                }
             }
 
         }
