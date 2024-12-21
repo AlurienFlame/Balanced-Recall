@@ -65,19 +65,19 @@ public class ConfigScreen extends Screen {
 		takeDamageInterruptsRecall = CyclingButtonWidget
 			.onOffBuilder()
 			.initially(config.getBoolean("take_damage_interrupts_recall"))
-			.build(Text.translatable("config.balancedrecall.take_damage_interrupts_recall"), (button, value)->setConfig("take_damage_interrupts_recall", value));
+			.build(0, 0, 300, 20, Text.translatable("config.balancedrecall.take_damage_interrupts_recall"), (button, value)->setConfig("take_damage_interrupts_recall", value));
 		body.add(takeDamageInterruptsRecall);
 
 		takeDamagePutsMirrorOnCooldown = CyclingButtonWidget
 			.onOffBuilder()
 			.initially(config.getBoolean("take_damage_puts_mirror_on_cooldown"))
-			.build(Text.translatable("config.balancedrecall.take_damage_puts_mirror_on_cooldown"), (button, value)->setConfig("take_damage_puts_mirror_on_cooldown", value));
+			.build(0, 0, 300, 20, Text.translatable("config.balancedrecall.take_damage_puts_mirror_on_cooldown"), (button, value)->setConfig("take_damage_puts_mirror_on_cooldown", value));
 		body.add(takeDamagePutsMirrorOnCooldown);
 
 		recallImpossibleWhenMonstersNearby = CyclingButtonWidget
 			.onOffBuilder()
 			.initially(config.getBoolean("recall_impossible_when_monsters_nearby"))
-			.build(Text.translatable("config.balancedrecall.recall_impossible_when_monsters_nearby"), (button, value)->setConfig("recall_impossible_when_monsters_nearby", value));
+			.build(0, 0, 300, 20, Text.translatable("config.balancedrecall.recall_impossible_when_monsters_nearby"), (button, value)->setConfig("recall_impossible_when_monsters_nearby", value));
 		body.add(recallImpossibleWhenMonstersNearby);
 
 		GridWidget grid = new GridWidget();
@@ -135,7 +135,7 @@ public class ConfigScreen extends Screen {
 		sleepingMatResetsPhantomTimer = CyclingButtonWidget
 			.onOffBuilder()
 			.initially(config.getBoolean("sleeping_mat_resets_phantom_timer"))
-			.build(Text.translatable("config.balancedrecall.sleeping_mat_resets_phantom_timer"), (button, value)->setConfig("sleeping_mat_resets_phantom_timer", value));
+			.build(0, 0, 300, 20, Text.translatable("config.balancedrecall.sleeping_mat_resets_phantom_timer"), (button, value)->setConfig("sleeping_mat_resets_phantom_timer", value));
 		body.add(sleepingMatResetsPhantomTimer);
 		this.layout.addBody(body);
 
