@@ -1,7 +1,12 @@
 package net.balancedrecall;
 
+import java.util.List;
+
+import com.mojang.datafixers.util.Either;
+
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -14,6 +19,9 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.ActionResult;
 import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
@@ -65,6 +73,22 @@ public class MagicMirror extends Item {
             serverPlayer.sendMessage(Text.translatable("balancedrecall.fail_cross_dimension"), false);
             return stack;
         }
+
+        // Cannot teleport while monsters are nearby
+        if (BalancedRecall.config.getBoolean("recall_impossible_when_monsters_nearby")) {
+            Vec3d feet = Vec3d.ofBottomCenter(serverPlayer.getBlockPos());
+            List<HostileEntity> list = serverPlayer.getWorld()
+                .getEntitiesByClass(
+                    HostileEntity.class,
+                    new Box(feet.getX() - 8.0, feet.getY() - 5.0, feet.getZ() - 8.0, feet.getX() + 8.0, feet.getY() + 5.0, feet.getZ() + 8.0),
+                    entity -> entity.isAngryAt(serverPlayer.getServerWorld(), serverPlayer)
+                );
+            if (!list.isEmpty()) {
+                serverPlayer.sendMessage(Text.translatable("balancedrecall.fail_monsters_nearby"), false);
+                return stack;
+            }
+        }
+
         serverPlayer.teleportTo(serverPlayer.getRespawnTarget(false, TeleportTarget.NO_OP));
         targetWorld.playSound(null, serverPlayer.getBlockPos(), SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.PLAYERS, 0.4f, 1f);
 
@@ -74,9 +98,6 @@ public class MagicMirror extends Item {
 
         // Damage durability
         stack.damage(1, (LivingEntity)serverPlayer, LivingEntity.getSlotForHand(serverPlayer.getActiveHand()));
-
-        // Put on cooldown
-        serverPlayer.getItemCooldownManager().set(stack, stack.getItem().getComponents().get(DataComponentTypes.USE_COOLDOWN).getCooldownTicks());
 
         return stack;
     }

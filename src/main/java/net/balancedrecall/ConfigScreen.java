@@ -73,7 +73,7 @@ public class ConfigScreen extends Screen {
 		recallImpossibleWhenMonstersNearby = CyclingButtonWidget
 			.onOffBuilder()
 			.build(0, 0, 300, 20, Text.translatable("config.balancedrecall.recall_impossible_when_monsters_nearby"), (button, value)->setConfig("recall_impossible_when_monsters_nearby", value));
-		// body.add(recallImpossibleWhenMonstersNearby); //TODO: set up code to check for nearby monsters before allowing recall
+		body.add(recallImpossibleWhenMonstersNearby);
 
 		GridWidget grid = new GridWidget();
 		grid.getMainPositioner().margin(4).alignHorizontalCenter();

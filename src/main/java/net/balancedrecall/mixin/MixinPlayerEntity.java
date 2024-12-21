@@ -37,11 +37,9 @@ public abstract class MixinPlayerEntity extends LivingEntity implements MatSleep
         this.sleepTimer = 0;
     }
 
+    // This only exists to make the compiler stop whining, it should never run
     @Shadow
-    public ItemCooldownManager getItemCooldownManager() {
-        // This only exists to make the compiler stop whining, it should never run
-		return new ItemCooldownManager();
-	}
+    public abstract ItemCooldownManager getItemCooldownManager();
 
     // Interrupt magic mirror usage when taking damage
     @Inject(method = "applyDamage(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/entity/damage/DamageSource;F)V", at = @At("HEAD"))
