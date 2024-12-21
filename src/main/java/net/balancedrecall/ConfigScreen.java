@@ -15,16 +15,12 @@ import net.minecraft.text.Text;
 public class ConfigScreen extends Screen {
     private Screen parent;
 	private final ThreePartsLayoutWidget layout = new ThreePartsLayoutWidget(this);
+	private final BalancedRecallConfig config;
 
 	public ConfigScreen(@Nullable Screen parent) {
         super(Text.translatable("balancedrecall.menu.title"));
-
 		this.parent = parent;
-
-		// TODO: Load config
-
-		// TODO: Reset button
-
+		this.config = BalancedRecall.config;
     }
 
 	@Override
@@ -37,16 +33,27 @@ public class ConfigScreen extends Screen {
 		layout.addHeader(new TextWidget(Text.of("Balanced Recall Configuration"), this.textRenderer));
 
 		// Mirror settings
-		// TODO: Save booleans
-		column.add(CheckboxWidget.builder(Text.of("Taking damage interrupts recall"), this.textRenderer).checked(BalancedRecallConfig.config.get("take_damage_interrupts_recall").getAsBoolean()).callback((checkbox, checked)->{
-			BalancedRecallConfig.config.addProperty("take_damage_interrupts_recall", checked);
-		}).build());
-		column.add(CheckboxWidget.builder(Text.of("Taking damage puts mirror on cooldown"), this.textRenderer).checked(BalancedRecallConfig.config.get("take_damage_puts_mirror_on_cooldown").getAsBoolean()).callback((checkbox, checked)->{
-			BalancedRecallConfig.config.addProperty("take_damage_puts_mirror_on_cooldown", checked);
-		}).build());
-		column.add(CheckboxWidget.builder(Text.of("Recalling is impossible when mosters are nearby"), this.textRenderer).checked(BalancedRecallConfig.config.get("recall_impossible_when_monsters_nearby").getAsBoolean()).callback((checkbox, checked)->{
-			BalancedRecallConfig.config.addProperty("recall_impossible_when_monsters_nearby", checked);
-		}).build());
+		column.add(
+			CheckboxWidget
+			.builder(Text.of("Taking damage interrupts recall"), this.textRenderer)
+			.checked(config.getBoolean("take_damage_interrupts_recall"))
+			.callback((checkbox, checked)->config.set("take_damage_interrupts_recall", checked))
+			.build()
+		);
+		column.add(
+			CheckboxWidget
+			.builder(Text.of("Taking damage puts mirror on cooldown"), this.textRenderer)
+			.checked(config.getBoolean("take_damage_puts_mirror_on_cooldown"))
+			.callback((checkbox, checked)->config.set("take_damage_puts_mirror_on_cooldown", checked))
+			.build()
+		);
+		column.add(
+			CheckboxWidget
+			.builder(Text.of("Recalling is impossible when mosters are nearby"), this.textRenderer)
+			.checked(config.getBoolean("recall_impossible_when_monsters_nearby"))
+			.callback((checkbox, checked)->config.set("recall_impossible_when_monsters_nearby", checked))
+			.build()
+		);
 
 		GridWidget grid = new GridWidget();
 		grid.getMainPositioner().margin(4).alignHorizontalCenter();
@@ -54,50 +61,67 @@ public class ConfigScreen extends Screen {
 		adder.getMainPositioner().alignLeft().alignVerticalCenter();
 
 		adder.add(new TextWidget(Text.of("Magic Mirror Use Time"), this.textRenderer));
-		TextFieldWidget magicMirrorUseTime = new TextFieldWidget(this.textRenderer, 100, 20, Text.of("Magic Mirror Use Time"));
-		magicMirrorUseTime.setChangedListener((value)->{
-			// TODO: validate
-			BalancedRecallConfig.config.addProperty("magic_mirror_use_time_ticks", Integer.parseInt(value));
-		});
-		magicMirrorUseTime.setText(BalancedRecallConfig.config.get("magic_mirror_use_time_ticks").getAsString());
+		TextFieldWidget magicMirrorUseTime = new TextFieldWidget(
+			this.textRenderer,
+			100,
+			20,
+			Text.of("Magic Mirror Use Time")
+		);
+		magicMirrorUseTime.setChangedListener((value)->config.set("magic_mirror_use_time_ticks", value));
+		magicMirrorUseTime.setText(config.getInteger("magic_mirror_use_time_ticks"));
 		adder.add(magicMirrorUseTime);
 
 		adder.add(new TextWidget(Text.of("Magic Mirror Cooldown Time"), this.textRenderer));
-		TextFieldWidget magicMirrorCooldownTime = new TextFieldWidget(this.textRenderer, 100, 20, Text.of("Magic Mirror Cooldown Time"));
-		magicMirrorCooldownTime.setChangedListener((value)->{
-			BalancedRecallConfig.config.addProperty("magic_mirror_cooldown_time_seconds", Integer.parseInt(value));
-		});
-		magicMirrorCooldownTime.setText(BalancedRecallConfig.config.get("magic_mirror_cooldown_time_seconds").getAsString());
+		TextFieldWidget magicMirrorCooldownTime = new TextFieldWidget(
+			this.textRenderer,
+			100,
+			20,
+			Text.of("Magic Mirror Cooldown Time")
+		);
+		magicMirrorCooldownTime.setChangedListener((value)->config.set("magic_mirror_cooldown_time_seconds", value));
+		magicMirrorCooldownTime.setText(config.getInteger("magic_mirror_cooldown_time_seconds"));
 		adder.add(magicMirrorCooldownTime);
 
 		adder.add(new TextWidget(Text.of("Dimensional Mirror Use Time"), this.textRenderer));
-		TextFieldWidget dimensionalMirrorUseTime = new TextFieldWidget(this.textRenderer, 100, 20, Text.of("Dimensional Mirror Use Time"));
-		dimensionalMirrorUseTime.setChangedListener((value)->{
-			BalancedRecallConfig.config.addProperty("dimensional_mirror_use_time_ticks", Integer.parseInt(value));
-		});
-		dimensionalMirrorUseTime.setText(BalancedRecallConfig.config.get("dimensional_mirror_use_time_ticks").getAsString());
+		TextFieldWidget dimensionalMirrorUseTime = new TextFieldWidget(
+			this.textRenderer,
+			100,
+			20,
+			Text.of("Dimensional Mirror Use Time")
+		);
+		dimensionalMirrorUseTime.setChangedListener((value)->config.set("dimensional_mirror_use_time_ticks", value));
+		dimensionalMirrorUseTime.setText(config.getInteger("dimensional_mirror_use_time_ticks"));
 		adder.add(dimensionalMirrorUseTime);
 
 		adder.add(new TextWidget(Text.of("Dimensional Mirror Cooldown Time"), this.textRenderer));
-		TextFieldWidget dimensionalMirrorCooldownTime = new TextFieldWidget(this.textRenderer, 100, 20, Text.of("Dimensional Mirror Cooldown Time"));
-		dimensionalMirrorCooldownTime.setChangedListener((value)->{
-			BalancedRecallConfig.config.addProperty("dimensional_mirror_cooldown_time_seconds", Integer.parseInt(value));
-		});
-		dimensionalMirrorCooldownTime.setText(BalancedRecallConfig.config.get("dimensional_mirror_cooldown_time_seconds").getAsString());
+		TextFieldWidget dimensionalMirrorCooldownTime = new TextFieldWidget(
+			this.textRenderer,
+			100,
+			20,
+			Text.of("Dimensional Mirror Cooldown Time")
+		);
+		dimensionalMirrorCooldownTime.setChangedListener((value)->config.set("dimensional_mirror_cooldown_time_seconds", value));
+		dimensionalMirrorCooldownTime.setText(config.getInteger("dimensional_mirror_cooldown_time_seconds"));
 		adder.add(dimensionalMirrorCooldownTime);
 
 		column.add(grid);
 
 		// Mat settings
-		column.add(CheckboxWidget.builder(Text.of("Sleeping mat resets phantom timer"), this.textRenderer).checked(BalancedRecallConfig.config.get("sleeping_mat_resets_phantom_timer").getAsBoolean()).callback((checkbox, checked)->{
-			BalancedRecallConfig.config.addProperty("sleeping_mat_resets_phantom_timer", checked);
-		}).build());
+		column.add(
+			CheckboxWidget
+			.builder(Text.of("Sleeping mat resets phantom timer"), this.textRenderer)
+			.checked(config.getBoolean("sleeping_mat_resets_phantom_timer"))
+			.callback((checkbox, checked)->config.set("sleeping_mat_resets_phantom_timer", checked))
+			.build()
+		);
 
 		this.layout.addBody(column);
 
 		// Config screen buttons
-		// TODO: Reset to defaults button
-		this.layout.addFooter(ButtonWidget.builder(Text.of("Done"), (btn) -> this.close()).dimensions(40, 40, 120, 20).build());
+		DirectionalLayoutWidget footer = DirectionalLayoutWidget.horizontal().spacing(8);
+		footer.add(ButtonWidget.builder(Text.of("Reset"), (btn) -> this.reset()).dimensions(40, 40, 120, 20).build());
+		footer.add(ButtonWidget.builder(Text.of("Done"), (btn) -> this.close()).dimensions(40, 40, 120, 20).build());
+		this.layout.addFooter(footer);
 
 		this.layout.forEachChild(child -> {
 			this.addDrawableChild(child);
@@ -110,9 +134,13 @@ public class ConfigScreen extends Screen {
 		this.layout.refreshPositions();
 	}
 
+	private void reset() {
+		config.setToDefaults();
+	}
+
 	@Override
 	public void close() {
-		BalancedRecallConfig.write();
+		config.write();
 		this.client.setScreen(this.parent);
 	}
 }
