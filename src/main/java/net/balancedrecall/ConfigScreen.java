@@ -92,16 +92,6 @@ public class ConfigScreen extends Screen {
 		magicMirrorUseTime.setChangedListener((value)->setConfig("magic_mirror_use_time_ticks", value));
 		adder.add(magicMirrorUseTime);
 
-		adder.add(new TextWidget(Text.translatable("config.balancedrecall.magic_mirror_cooldown_time_seconds"), this.textRenderer));
-		magicMirrorCooldownTime = new TextFieldWidget(
-			this.textRenderer,
-			100,
-			20,
-			Text.translatable("config.balancedrecall.magic_mirror_cooldown_time_seconds")
-		);
-		magicMirrorCooldownTime.setChangedListener((value)->setConfig("magic_mirror_cooldown_time_seconds", value));
-		adder.add(magicMirrorCooldownTime);
-
 		adder.add(new TextWidget(Text.translatable("config.balancedrecall.dimensional_mirror_use_time_ticks"), this.textRenderer));
 		dimensionalMirrorUseTime = new TextFieldWidget(
 			this.textRenderer,
@@ -111,6 +101,16 @@ public class ConfigScreen extends Screen {
 		);
 		dimensionalMirrorUseTime.setChangedListener((value)->setConfig("dimensional_mirror_use_time_ticks", value));
 		adder.add(dimensionalMirrorUseTime);
+
+		adder.add(new TextWidget(Text.translatable("config.balancedrecall.magic_mirror_cooldown_time_seconds"), this.textRenderer));
+		magicMirrorCooldownTime = new TextFieldWidget(
+			this.textRenderer,
+			100,
+			20,
+			Text.translatable("config.balancedrecall.magic_mirror_cooldown_time_seconds")
+		);
+		magicMirrorCooldownTime.setChangedListener((value)->setConfig("magic_mirror_cooldown_time_seconds", value));
+		adder.add(magicMirrorCooldownTime);
 
 		adder.add(new TextWidget(Text.translatable("config.balancedrecall.dimensional_mirror_cooldown_time_seconds"), this.textRenderer));
 		dimensionalMirrorCooldownTime = new TextFieldWidget(
@@ -123,6 +123,8 @@ public class ConfigScreen extends Screen {
 		adder.add(dimensionalMirrorCooldownTime);
 
 		body.add(grid);
+
+		body.add(new TextWidget(Text.translatable("config.balancedrecall.restart_necessary"), this.textRenderer));
 
 		// Mat settings
 		sleepingMatResetsPhantomTimer = CyclingButtonWidget
@@ -152,6 +154,7 @@ public class ConfigScreen extends Screen {
 		takeDamageInterruptsRecall.setValue(config.getBoolean("take_damage_interrupts_recall"));
 		takeDamagePutsMirrorOnCooldown.setValue(config.getBoolean("take_damage_puts_mirror_on_cooldown"));
 		recallImpossibleWhenMonstersNearby.setValue(config.getBoolean("recall_impossible_when_monsters_nearby"));
+		// TODO: Find a way to scale the model animation dynamically with the use time
 		magicMirrorUseTime.setText(config.getInteger("magic_mirror_use_time_ticks").toString());
 		magicMirrorCooldownTime.setText(config.getInteger("magic_mirror_cooldown_time_seconds").toString());
 		dimensionalMirrorUseTime.setText(config.getInteger("dimensional_mirror_use_time_ticks").toString());
