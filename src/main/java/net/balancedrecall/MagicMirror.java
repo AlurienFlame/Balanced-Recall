@@ -83,6 +83,6 @@ public class MagicMirror extends Item {
 
     @Override
     public int getMaxUseTime(ItemStack stack, LivingEntity user) {
-        return 20;
+        return BalancedRecall.config.getInteger("magic_mirror_use_time_ticks");
     }
 }

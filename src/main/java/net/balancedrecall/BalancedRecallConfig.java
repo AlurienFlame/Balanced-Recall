@@ -69,8 +69,8 @@ public class BalancedRecallConfig {
     public Boolean getBoolean(String key) {
         return jsonObject.get(key).getAsBoolean();
     }
-    public String getInteger(String key) {
-        return jsonObject.get(key).toString();
+    public Integer getInteger(String key) {
+        return jsonObject.get(key).getAsInt();
     }
 
     // Create the config file with default values.

@@ -75,7 +75,7 @@ public class ConfigScreen extends Screen {
 		recallImpossibleWhenMonstersNearby = CyclingButtonWidget
 			.onOffBuilder()
 			.build(0, 0, 300, 20, Text.translatable("config.balancedrecall.recall_impossible_when_monsters_nearby"), (button, value)->setConfig("recall_impossible_when_monsters_nearby", value));
-		body.add(recallImpossibleWhenMonstersNearby);
+		// body.add(recallImpossibleWhenMonstersNearby); //TODO: set up code to check for nearby monsters before allowing recall
 
 		GridWidget grid = new GridWidget();
 		grid.getMainPositioner().margin(4).alignHorizontalCenter();
@@ -152,10 +152,10 @@ public class ConfigScreen extends Screen {
 		takeDamageInterruptsRecall.setValue(config.getBoolean("take_damage_interrupts_recall"));
 		takeDamagePutsMirrorOnCooldown.setValue(config.getBoolean("take_damage_puts_mirror_on_cooldown"));
 		recallImpossibleWhenMonstersNearby.setValue(config.getBoolean("recall_impossible_when_monsters_nearby"));
-		magicMirrorUseTime.setText(config.getInteger("magic_mirror_use_time_ticks"));
-		magicMirrorCooldownTime.setText(config.getInteger("magic_mirror_cooldown_time_seconds"));
-		dimensionalMirrorUseTime.setText(config.getInteger("dimensional_mirror_use_time_ticks"));
-		dimensionalMirrorCooldownTime.setText(config.getInteger("dimensional_mirror_cooldown_time_seconds"));
+		magicMirrorUseTime.setText(config.getInteger("magic_mirror_use_time_ticks").toString());
+		magicMirrorCooldownTime.setText(config.getInteger("magic_mirror_cooldown_time_seconds").toString());
+		dimensionalMirrorUseTime.setText(config.getInteger("dimensional_mirror_use_time_ticks").toString());
+		dimensionalMirrorCooldownTime.setText(config.getInteger("dimensional_mirror_cooldown_time_seconds").toString());
 		sleepingMatResetsPhantomTimer.setValue(config.getBoolean("sleeping_mat_resets_phantom_timer"));
 		refreshWidgetActiveness();
 	}
