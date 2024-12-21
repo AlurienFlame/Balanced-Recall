@@ -33,24 +33,33 @@ public class BalancedRecallConfig {
         read();
     }
 
+    public JsonObject getDefaults() {
+        JsonObject defaults = new JsonObject();
+        defaults.addProperty("take_damage_interrupts_recall", true);
+        defaults.addProperty("take_damage_puts_mirror_on_cooldown", true);
+        defaults.addProperty("recall_impossible_when_monsters_nearby", true);
+        defaults.addProperty("magic_mirror_use_time_ticks", 20);
+        defaults.addProperty("magic_mirror_cooldown_time_seconds", 1);
+        defaults.addProperty("dimensional_mirror_use_time_ticks", 20);
+        defaults.addProperty("dimensional_mirror_cooldown_time_seconds", 1);
+        defaults.addProperty("sleeping_mat_resets_phantom_timer", false);
+        return defaults;
+    }
+
     public void setToDefaults() {
-        jsonObject = new JsonObject();
-        jsonObject.addProperty("take_damage_interrupts_recall", true);
-        jsonObject.addProperty("take_damage_puts_mirror_on_cooldown", true);
-        jsonObject.addProperty("recall_impossible_when_monsters_nearby", true);
-        jsonObject.addProperty("magic_mirror_use_time_ticks", 20);
-        jsonObject.addProperty("magic_mirror_cooldown_time_seconds", 1);
-        jsonObject.addProperty("dimensional_mirror_use_time_ticks", 20);
-        jsonObject.addProperty("dimensional_mirror_cooldown_time_seconds", 1);
-        jsonObject.addProperty("sleeping_mat_resets_phantom_timer", true);
+        jsonObject = getDefaults();
+    }
+
+    public Boolean areDefaults() {
+        return jsonObject.equals(getDefaults());
     }
 
     // Setters and getters
-    // TODO: validate
     public void set(String key, Boolean value) {
         jsonObject.addProperty(key, value);
     }
     public void set(String key, String value) {
+        // FIXME: crash on non-integer inputs
         jsonObject.addProperty(key, Integer.parseInt(value));
     }
     public Boolean getBoolean(String key) {
