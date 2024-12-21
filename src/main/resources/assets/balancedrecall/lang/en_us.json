@@ -22,5 +22,13 @@
     "advancements.balancedrecall.craft_sleeping_mat.description": "Craft a Sleeping Mat",
     "advancements.balancedrecall.use_sleeping_mat.title": "Not so Sweet Dreams",
     "advancements.balancedrecall.use_sleeping_mat.description": "Sleep on a Sleeping Mat to avoid setting your respawn point",
-    "balancedrecall.menu.title": "Balanced Recall"
+    "config.balancedrecall.title": "Balanced Recall",
+    "config.balancedrecall.take_damage_interrupts_recall": "Taking damage interrupts recall",
+    "config.balancedrecall.take_damage_puts_mirror_on_cooldown": "Taking damage puts mirror on cooldown",
+    "config.balancedrecall.recall_impossible_when_monsters_nearby": "Recallling is impossible when monsters are nearby",
+    "config.balancedrecall.magic_mirror_use_time_ticks": "Magic Mirror use time (ticks)",
+    "config.balancedrecall.magic_mirror_cooldown_time_seconds": "Magic Mirror cooldown time (seconds)",
+    "config.balancedrecall.dimensional_mirror_use_time_ticks": "Dimensional Mirror use time (ticks)",
+    "config.balancedrecall.dimensional_mirror_cooldown_time_seconds": "Dimensional Mirror cooldown time (seconds)",
+    "config.balancedrecall.sleeping_mat_resets_phantom_timer": "Sleeping Mat resets phantom timer"
 }

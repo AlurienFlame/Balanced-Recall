@@ -10,6 +10,7 @@ import net.minecraft.client.gui.widget.GridWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.TextWidget;
 import net.minecraft.client.gui.widget.ThreePartsLayoutWidget;
+import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 
 public class ConfigScreen extends Screen {
@@ -45,17 +46,16 @@ public class ConfigScreen extends Screen {
 
 	@Override
 	protected void init() {
-		// TODO: lang file instead of hardcoded strings
 		// TODO: detect config in real code
 
 		// Header
-		layout.addHeader(new TextWidget(Text.of("Balanced Recall Configuration"), this.textRenderer));
+		layout.addHeader(new TextWidget(Text.translatable("config.balancedrecall.title"), this.textRenderer));
 
 		// Footer
 		DirectionalLayoutWidget footer = DirectionalLayoutWidget.horizontal().spacing(8);
-		resetButton = ButtonWidget.builder(Text.of("Reset"), (btn) -> this.reset()).dimensions(40, 40, 120, 20).build();
+		resetButton = ButtonWidget.builder(Text.translatable("controls.reset"), (btn) -> this.reset()).dimensions(40, 40, 120, 20).build();
 		footer.add(resetButton);
-		footer.add(ButtonWidget.builder(Text.of("Done"), (btn) -> this.close()).dimensions(40, 40, 120, 20).build());
+		footer.add(ButtonWidget.builder(ScreenTexts.DONE, (btn) -> this.close()).dimensions(40, 40, 120, 20).build());
 		this.layout.addFooter(footer);
 
 		// Body
@@ -63,21 +63,21 @@ public class ConfigScreen extends Screen {
 
 		// Mirror settings
 		takeDamageInterruptsRecall = CyclingButtonWidget
-			.onOffBuilder(Text.of("Enabled"), Text.of("Disabled"))
+			.onOffBuilder()
 			.initially(config.getBoolean("take_damage_interrupts_recall"))
-			.build(Text.of("Taking damage interrupts recall"), (button, value)->setConfig("take_damage_interrupts_recall", value));
+			.build(Text.translatable("config.balancedrecall.take_damage_interrupts_recall"), (button, value)->setConfig("take_damage_interrupts_recall", value));
 		body.add(takeDamageInterruptsRecall);
 
 		takeDamagePutsMirrorOnCooldown = CyclingButtonWidget
-			.onOffBuilder(Text.of("Enabled"), Text.of("Disabled"))
+			.onOffBuilder()
 			.initially(config.getBoolean("take_damage_puts_mirror_on_cooldown"))
-			.build(Text.of("Taking damage puts mirror on cooldown"), (button, value)->setConfig("take_damage_puts_mirror_on_cooldown", value));
+			.build(Text.translatable("config.balancedrecall.take_damage_puts_mirror_on_cooldown"), (button, value)->setConfig("take_damage_puts_mirror_on_cooldown", value));
 		body.add(takeDamagePutsMirrorOnCooldown);
 
 		recallImpossibleWhenMonstersNearby = CyclingButtonWidget
-			.onOffBuilder(Text.of("Enabled"), Text.of("Disabled"))
+			.onOffBuilder()
 			.initially(config.getBoolean("recall_impossible_when_monsters_nearby"))
-			.build(Text.of("Recall impossible when monsters nearby"), (button, value)->setConfig("recall_impossible_when_monsters_nearby", value));
+			.build(Text.translatable("config.balancedrecall.recall_impossible_when_monsters_nearby"), (button, value)->setConfig("recall_impossible_when_monsters_nearby", value));
 		body.add(recallImpossibleWhenMonstersNearby);
 
 		GridWidget grid = new GridWidget();
@@ -85,45 +85,45 @@ public class ConfigScreen extends Screen {
 		GridWidget.Adder adder = grid.createAdder(2);
 		adder.getMainPositioner().alignLeft().alignVerticalCenter();
 
-		adder.add(new TextWidget(Text.of("Magic Mirror Use Time"), this.textRenderer));
+		adder.add(new TextWidget(Text.translatable("config.balancedrecall.magic_mirror_use_time_ticks"), this.textRenderer));
 		magicMirrorUseTime = new TextFieldWidget(
 			this.textRenderer,
 			100,
 			20,
-			Text.of("Magic Mirror Use Time")
+			Text.translatable("config.balancedrecall.magic_mirror_use_time_ticks")
 		);
 		magicMirrorUseTime.setChangedListener((value)->setConfig("magic_mirror_use_time_ticks", value));
 		magicMirrorUseTime.setText(config.getInteger("magic_mirror_use_time_ticks"));
 		adder.add(magicMirrorUseTime);
 
-		adder.add(new TextWidget(Text.of("Magic Mirror Cooldown Time"), this.textRenderer));
+		adder.add(new TextWidget(Text.translatable("config.balancedrecall.magic_mirror_cooldown_time_seconds"), this.textRenderer));
 		magicMirrorCooldownTime = new TextFieldWidget(
 			this.textRenderer,
 			100,
 			20,
-			Text.of("Magic Mirror Cooldown Time")
+			Text.translatable("config.balancedrecall.magic_mirror_cooldown_time_seconds")
 		);
 		magicMirrorCooldownTime.setChangedListener((value)->setConfig("magic_mirror_cooldown_time_seconds", value));
 		magicMirrorCooldownTime.setText(config.getInteger("magic_mirror_cooldown_time_seconds"));
 		adder.add(magicMirrorCooldownTime);
 
-		adder.add(new TextWidget(Text.of("Dimensional Mirror Use Time"), this.textRenderer));
+		adder.add(new TextWidget(Text.translatable("config.balancedrecall.dimensional_mirror_use_time_ticks"), this.textRenderer));
 		dimensionalMirrorUseTime = new TextFieldWidget(
 			this.textRenderer,
 			100,
 			20,
-			Text.of("Dimensional Mirror Use Time")
+			Text.translatable("config.balancedrecall.dimensional_mirror_use_time_ticks")
 		);
 		dimensionalMirrorUseTime.setChangedListener((value)->setConfig("dimensional_mirror_use_time_ticks", value));
 		dimensionalMirrorUseTime.setText(config.getInteger("dimensional_mirror_use_time_ticks"));
 		adder.add(dimensionalMirrorUseTime);
 
-		adder.add(new TextWidget(Text.of("Dimensional Mirror Cooldown Time"), this.textRenderer));
+		adder.add(new TextWidget(Text.translatable("config.balancedrecall.dimensional_mirror_cooldown_time_seconds"), this.textRenderer));
 		dimensionalMirrorCooldownTime = new TextFieldWidget(
 			this.textRenderer,
 			100,
 			20,
-			Text.of("Dimensional Mirror Cooldown Time")
+			Text.translatable("config.balancedrecall.dimensional_mirror_cooldown_time_seconds")
 		);
 		dimensionalMirrorCooldownTime.setChangedListener((value)->setConfig("dimensional_mirror_cooldown_time_seconds", value));
 		dimensionalMirrorCooldownTime.setText(config.getInteger("dimensional_mirror_cooldown_time_seconds"));
@@ -133,9 +133,9 @@ public class ConfigScreen extends Screen {
 
 		// Mat settings
 		sleepingMatResetsPhantomTimer = CyclingButtonWidget
-			.onOffBuilder(Text.of("Enabled"), Text.of("Disabled"))
+			.onOffBuilder()
 			.initially(config.getBoolean("sleeping_mat_resets_phantom_timer"))
-			.build(Text.of("Sleeping mat resets phantom timer"), (button, value)->setConfig("sleeping_mat_resets_phantom_timer", value));
+			.build(Text.translatable("config.balancedrecall.sleeping_mat_resets_phantom_timer"), (button, value)->setConfig("sleeping_mat_resets_phantom_timer", value));
 		body.add(sleepingMatResetsPhantomTimer);
 		this.layout.addBody(body);
 
