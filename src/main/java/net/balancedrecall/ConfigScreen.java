@@ -2,11 +2,9 @@ package net.balancedrecall;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.CheckboxWidget;
-import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
 import net.minecraft.client.gui.widget.GridWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -32,7 +30,6 @@ public class ConfigScreen extends Screen {
 	@Override
 	protected void init() {
 		// TODO: lang file instead of hardcoded strings
-		// TODO: write config to file
 		// TODO: detect config in real code
 
 		DirectionalLayoutWidget column = DirectionalLayoutWidget.vertical().spacing(8);
@@ -40,6 +37,7 @@ public class ConfigScreen extends Screen {
 		layout.addHeader(new TextWidget(Text.of("Balanced Recall Configuration"), this.textRenderer));
 
 		// Mirror settings
+		// TODO: Save booleans
 		column.add(CheckboxWidget.builder(Text.of("Taking damage interrupts recall"), this.textRenderer).checked(true).build());
 		column.add(CheckboxWidget.builder(Text.of("Taking damage puts mirror on cooldown"), this.textRenderer).checked(true).build());
 		column.add(CheckboxWidget.builder(Text.of("Recalling is impossible when mosters are nearby"), this.textRenderer).checked(true).build());
@@ -48,14 +46,40 @@ public class ConfigScreen extends Screen {
 		grid.getMainPositioner().margin(4).alignHorizontalCenter();
 		GridWidget.Adder adder = grid.createAdder(2);
 		adder.getMainPositioner().alignLeft().alignVerticalCenter();
+
 		adder.add(new TextWidget(Text.of("Magic Mirror Use Time"), this.textRenderer));
-		adder.add(new TextFieldWidget(this.textRenderer, 100, 20, Text.of("Magic Mirror Use Time")));
+		TextFieldWidget magicMirrorUseTime = new TextFieldWidget(this.textRenderer, 100, 20, Text.of("Magic Mirror Use Time"));
+		magicMirrorUseTime.setChangedListener((value)->{
+			// TODO: validate
+			BalancedRecall.config.config.addProperty("magic_mirror_use_time_ticks", Integer.parseInt(value));
+		});
+		magicMirrorUseTime.setText(BalancedRecall.config.config.get("magic_mirror_use_time_ticks").getAsString());
+		adder.add(magicMirrorUseTime);
+
 		adder.add(new TextWidget(Text.of("Magic Mirror Cooldown Time"), this.textRenderer));
-		adder.add(new TextFieldWidget(this.textRenderer, 100, 20, Text.of("Magic Mirror Cooldown Time")));
+		TextFieldWidget magicMirrorCooldownTime = new TextFieldWidget(this.textRenderer, 100, 20, Text.of("Magic Mirror Cooldown Time"));
+		magicMirrorCooldownTime.setChangedListener((value)->{
+			BalancedRecall.config.config.addProperty("magic_mirror_cooldown_time_seconds", Integer.parseInt(value));
+		});
+		magicMirrorCooldownTime.setText(BalancedRecall.config.config.get("magic_mirror_cooldown_time_seconds").getAsString());
+		adder.add(magicMirrorCooldownTime);
+
 		adder.add(new TextWidget(Text.of("Dimensional Mirror Use Time"), this.textRenderer));
-		adder.add(new TextFieldWidget(this.textRenderer, 100, 20, Text.of("Dimensional Mirror Use Time")));
+		TextFieldWidget dimensionalMirrorUseTime = new TextFieldWidget(this.textRenderer, 100, 20, Text.of("Dimensional Mirror Use Time"));
+		dimensionalMirrorUseTime.setChangedListener((value)->{
+			BalancedRecall.config.config.addProperty("dimensional_mirror_use_time_ticks", Integer.parseInt(value));
+		});
+		dimensionalMirrorUseTime.setText(BalancedRecall.config.config.get("dimensional_mirror_use_time_ticks").getAsString());
+		adder.add(dimensionalMirrorUseTime);
+
 		adder.add(new TextWidget(Text.of("Dimensional Mirror Cooldown Time"), this.textRenderer));
-		adder.add(new TextFieldWidget(this.textRenderer, 100, 20, Text.of("Dimensional Mirror Cooldown Time")));
+		TextFieldWidget dimensionalMirrorCooldownTime = new TextFieldWidget(this.textRenderer, 100, 20, Text.of("Dimensional Mirror Cooldown Time"));
+		dimensionalMirrorCooldownTime.setChangedListener((value)->{
+			BalancedRecall.config.config.addProperty("dimensional_mirror_cooldown_time_seconds", Integer.parseInt(value));
+		});
+		dimensionalMirrorCooldownTime.setText(BalancedRecall.config.config.get("dimensional_mirror_cooldown_time_seconds").getAsString());
+		adder.add(dimensionalMirrorCooldownTime);
+
 		column.add(grid);
 
 		// Recall settings
@@ -64,6 +88,7 @@ public class ConfigScreen extends Screen {
 		this.layout.addBody(column);
 
 		// Config screen buttons
+		// TODO: Reset to defaults button
 		this.layout.addFooter(ButtonWidget.builder(Text.of("Done"), (btn) -> this.close()).dimensions(40, 40, 120, 20).build());
 
 		this.layout.forEachChild(child -> {
@@ -79,6 +104,7 @@ public class ConfigScreen extends Screen {
 
 	@Override
 	public void close() {
+		BalancedRecall.config.write();
 		this.client.setScreen(this.parent);
 	}
 }
