@@ -20,10 +20,10 @@ public class BalancedRecall implements ModInitializer {
 
     // Items
     private static final RegistryKey<Item> magic_mirror_key = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MODID, "magic_mirror"));
-    public static final Item MAGIC_MIRROR = new MagicMirror(new Item.Settings().registryKey(magic_mirror_key).maxDamage(256).repairable(Items.ENDER_PEARL).useCooldown(config.getInteger("magic_mirror_cooldown_time_seconds")));
+    public static final Item MAGIC_MIRROR = new MagicMirror(new Item.Settings().registryKey(magic_mirror_key).maxDamage(256).repairable(Items.ENDER_PEARL).useCooldown(config.getDouble("magic_mirror_cooldown_time_seconds").floatValue()));
 
     private static final RegistryKey<Item> dimensional_mirror_key = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MODID, "dimensional_mirror"));
-    public static final Item DIMENSIONAL_MIRROR = new DimensionalMirror(new Item.Settings().registryKey(dimensional_mirror_key).maxDamage(512).fireproof().repairable(Items.ENDER_PEARL).useCooldown(config.getInteger("dimensional_mirror_cooldown_time_seconds")));
+    public static final Item DIMENSIONAL_MIRROR = new DimensionalMirror(new Item.Settings().registryKey(dimensional_mirror_key).maxDamage(512).fireproof().repairable(Items.ENDER_PEARL).useCooldown(config.getDouble("dimensional_mirror_cooldown_time_seconds").floatValue()));
 
     private static final RegistryKey<Item> sleeping_mat_key = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(MODID, "sleeping_mat"));
     public static final Item SLEEPING_MAT = new SleepingMat(new Item.Settings().registryKey(sleeping_mat_key).maxDamage(128));

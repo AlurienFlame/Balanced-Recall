@@ -80,24 +80,24 @@ public class ConfigScreen extends Screen {
 		GridWidget.Adder adder = grid.createAdder(2);
 		adder.getMainPositioner().alignLeft().alignVerticalCenter();
 
-		adder.add(new TextWidget(Text.translatable("config.balancedrecall.magic_mirror_use_time_ticks"), this.textRenderer));
+		adder.add(new TextWidget(Text.translatable("config.balancedrecall.magic_mirror_use_time_seconds"), this.textRenderer));
 		magicMirrorUseTime = new TextFieldWidget(
 			this.textRenderer,
 			100,
 			20,
-			Text.translatable("config.balancedrecall.magic_mirror_use_time_ticks")
+			Text.translatable("config.balancedrecall.magic_mirror_use_time_seconds")
 		);
-		magicMirrorUseTime.setChangedListener((value)->setConfig("magic_mirror_use_time_ticks", value));
+		magicMirrorUseTime.setChangedListener((value)->setConfig("magic_mirror_use_time_seconds", value));
 		adder.add(magicMirrorUseTime);
 
-		adder.add(new TextWidget(Text.translatable("config.balancedrecall.dimensional_mirror_use_time_ticks"), this.textRenderer));
+		adder.add(new TextWidget(Text.translatable("config.balancedrecall.dimensional_mirror_use_time_seconds"), this.textRenderer));
 		dimensionalMirrorUseTime = new TextFieldWidget(
 			this.textRenderer,
 			100,
 			20,
-			Text.translatable("config.balancedrecall.dimensional_mirror_use_time_ticks")
+			Text.translatable("config.balancedrecall.dimensional_mirror_use_time_seconds")
 		);
-		dimensionalMirrorUseTime.setChangedListener((value)->setConfig("dimensional_mirror_use_time_ticks", value));
+		dimensionalMirrorUseTime.setChangedListener((value)->setConfig("dimensional_mirror_use_time_seconds", value));
 		adder.add(dimensionalMirrorUseTime);
 
 		adder.add(new TextWidget(Text.translatable("config.balancedrecall.magic_mirror_cooldown_time_seconds"), this.textRenderer));
@@ -154,10 +154,10 @@ public class ConfigScreen extends Screen {
 		recallImpossibleWhenMonstersNearby.setValue(config.getBoolean("recall_impossible_when_monsters_nearby"));
 		// TODO: Find a way to scale the model animation dynamically with the use time
 		// (I'm pretty sure this is not possible at runtime sadly)
-		magicMirrorUseTime.setText(config.getInteger("magic_mirror_use_time_ticks").toString());
-		magicMirrorCooldownTime.setText(config.getInteger("magic_mirror_cooldown_time_seconds").toString());
-		dimensionalMirrorUseTime.setText(config.getInteger("dimensional_mirror_use_time_ticks").toString());
-		dimensionalMirrorCooldownTime.setText(config.getInteger("dimensional_mirror_cooldown_time_seconds").toString());
+		magicMirrorUseTime.setText(config.getDouble("magic_mirror_use_time_seconds").toString());
+		magicMirrorCooldownTime.setText(config.getDouble("magic_mirror_cooldown_time_seconds").toString());
+		dimensionalMirrorUseTime.setText(config.getDouble("dimensional_mirror_use_time_seconds").toString());
+		dimensionalMirrorCooldownTime.setText(config.getDouble("dimensional_mirror_cooldown_time_seconds").toString());
 		sleepingMatResetsPhantomTimer.setValue(config.getBoolean("sleeping_mat_resets_phantom_timer"));
 		refreshWidgetActiveness();
 	}

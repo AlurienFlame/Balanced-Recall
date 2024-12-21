@@ -38,11 +38,10 @@ public class BalancedRecallConfig {
         defaults.addProperty("take_damage_interrupts_recall", true);
         defaults.addProperty("take_damage_puts_mirror_on_cooldown", true);
         defaults.addProperty("recall_impossible_when_monsters_nearby", true);
-        // TODO: have users enter float value in seconds and scale it
-        defaults.addProperty("magic_mirror_use_time_ticks", 20);
-        defaults.addProperty("magic_mirror_cooldown_time_seconds", 1);
-        defaults.addProperty("dimensional_mirror_use_time_ticks", 20);
-        defaults.addProperty("dimensional_mirror_cooldown_time_seconds", 1);
+        defaults.addProperty("magic_mirror_use_time_seconds", 1D);
+        defaults.addProperty("magic_mirror_cooldown_time_seconds", 1D);
+        defaults.addProperty("dimensional_mirror_use_time_seconds", 1D);
+        defaults.addProperty("dimensional_mirror_cooldown_time_seconds", 1D);
         defaults.addProperty("sleeping_mat_resets_phantom_timer", false);
         return defaults;
     }
@@ -61,7 +60,7 @@ public class BalancedRecallConfig {
     }
     public void set(String key, String value) {
         try {
-            jsonObject.addProperty(key, Integer.parseInt(value));
+            jsonObject.addProperty(key, Double.parseDouble(value));
         } catch (NumberFormatException e) {
             return;
         }
@@ -69,8 +68,8 @@ public class BalancedRecallConfig {
     public Boolean getBoolean(String key) {
         return jsonObject.get(key).getAsBoolean();
     }
-    public Integer getInteger(String key) {
-        return jsonObject.get(key).getAsInt();
+    public Double getDouble(String key) {
+        return jsonObject.get(key).getAsDouble();
     }
 
     // Create the config file with default values.
