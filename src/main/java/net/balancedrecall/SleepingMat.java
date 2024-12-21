@@ -88,6 +88,9 @@ public class SleepingMat extends Item {
         // Update statistics
         serverPlayer.incrementStat(Stats.USED.getOrCreateStat(this));
         serverPlayer.incrementStat(BalancedRecall.MAT_SLEEPS);
+        if (BalancedRecall.config.getBoolean("sleeping_mat_resets_phantom_timer")) {
+            serverPlayer.resetStat(Stats.CUSTOM.getOrCreateStat(Stats.TIME_SINCE_REST));
+        }
 
         // Damage durability
         // BUG: When used on 1 durability, item breaks, but player still tries to sleep briefly before cancelling

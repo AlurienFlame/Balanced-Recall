@@ -46,8 +46,6 @@ public class ConfigScreen extends Screen {
 
 	@Override
 	protected void init() {
-		// TODO: detect config in real code
-
 		// Header
 		layout.addHeader(new TextWidget(Text.translatable("config.balancedrecall.title"), this.textRenderer));
 
@@ -155,6 +153,7 @@ public class ConfigScreen extends Screen {
 		takeDamagePutsMirrorOnCooldown.setValue(config.getBoolean("take_damage_puts_mirror_on_cooldown"));
 		recallImpossibleWhenMonstersNearby.setValue(config.getBoolean("recall_impossible_when_monsters_nearby"));
 		// TODO: Find a way to scale the model animation dynamically with the use time
+		// (I'm pretty sure this is not possible at runtime sadly)
 		magicMirrorUseTime.setText(config.getInteger("magic_mirror_use_time_ticks").toString());
 		magicMirrorCooldownTime.setText(config.getInteger("magic_mirror_cooldown_time_seconds").toString());
 		dimensionalMirrorUseTime.setText(config.getInteger("dimensional_mirror_use_time_ticks").toString());
