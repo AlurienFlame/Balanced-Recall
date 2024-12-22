@@ -37,7 +37,7 @@ public class BalancedRecallConfig {
         JsonObject defaults = new JsonObject();
         defaults.addProperty("take_damage_interrupts_recall", true);
         defaults.addProperty("take_damage_puts_mirror_on_cooldown", true);
-        defaults.addProperty("recall_impossible_when_monsters_nearby", true);
+        defaults.addProperty("recall_impossible_when_monsters_nearby", false);
         defaults.addProperty("magic_mirror_use_time_seconds", 1D);
         defaults.addProperty("magic_mirror_cooldown_time_seconds", 1D);
         defaults.addProperty("dimensional_mirror_use_time_seconds", 1D);
