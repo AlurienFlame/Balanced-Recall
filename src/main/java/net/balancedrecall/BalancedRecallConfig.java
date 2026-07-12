@@ -32,17 +32,27 @@ public class BalancedRecallConfig {
         }
         read();
     }
+    
+    // defaults
+    public static final Boolean DEFAULT_TAKE_DAMAGE_INTERRUPTS_RECALL = true;
+    public static final Boolean DEFAULT_TAKE_DAMAGE_PUTS_MIRROR_ON_COOLDOWN = true;
+    public static final Boolean DEFAULT_RECALL_IMPOSSIBLE_WHEN_MONSTERS_NEARBY = false;
+    public static final Double DEFAULT_MAGIC_MIRROR_USE_TIME_SECONDS = 1D;
+    public static final Double DEFAULT_MAGIC_MIRROR_COOLDOWN_TIME_SECONDS = 1D;
+    public static final Double DEFAULT_DIMENSIONAL_MIRROR_USE_TIME_SECONDS = 1D;
+    public static final Double DEFAULT_DIMENSIONAL_MIRROR_COOLDOWN_TIME_SECONDS = 1D;
+    public static final Boolean DEFAULT_SLEEPING_MAT_RESETS_PHANTOM_TIMER = false;
 
     public JsonObject getDefaults() {
         JsonObject defaults = new JsonObject();
-        defaults.addProperty("take_damage_interrupts_recall", true);
-        defaults.addProperty("take_damage_puts_mirror_on_cooldown", true);
-        defaults.addProperty("recall_impossible_when_monsters_nearby", false);
-        defaults.addProperty("magic_mirror_use_time_seconds", 1D);
-        defaults.addProperty("magic_mirror_cooldown_time_seconds", 1D);
-        defaults.addProperty("dimensional_mirror_use_time_seconds", 1D);
-        defaults.addProperty("dimensional_mirror_cooldown_time_seconds", 1D);
-        defaults.addProperty("sleeping_mat_resets_phantom_timer", false);
+        defaults.addProperty("take_damage_interrupts_recall", DEFAULT_TAKE_DAMAGE_INTERRUPTS_RECALL);
+        defaults.addProperty("take_damage_puts_mirror_on_cooldown", DEFAULT_TAKE_DAMAGE_PUTS_MIRROR_ON_COOLDOWN);
+        defaults.addProperty("recall_impossible_when_monsters_nearby", DEFAULT_RECALL_IMPOSSIBLE_WHEN_MONSTERS_NEARBY);
+        defaults.addProperty("magic_mirror_use_time_seconds", DEFAULT_MAGIC_MIRROR_USE_TIME_SECONDS);
+        defaults.addProperty("magic_mirror_cooldown_time_seconds", DEFAULT_MAGIC_MIRROR_COOLDOWN_TIME_SECONDS);
+        defaults.addProperty("dimensional_mirror_use_time_seconds", DEFAULT_DIMENSIONAL_MIRROR_USE_TIME_SECONDS);
+        defaults.addProperty("dimensional_mirror_cooldown_time_seconds", DEFAULT_DIMENSIONAL_MIRROR_COOLDOWN_TIME_SECONDS);
+        defaults.addProperty("sleeping_mat_resets_phantom_timer", DEFAULT_SLEEPING_MAT_RESETS_PHANTOM_TIMER);
         return defaults;
     }
 

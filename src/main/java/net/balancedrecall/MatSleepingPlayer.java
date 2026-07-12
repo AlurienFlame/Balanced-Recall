@@ -1,6 +1,6 @@
 package net.balancedrecall;
 
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 
 // This gives SleepingMat something to call sleepOnMat from because you can't directly reference a mixin
 

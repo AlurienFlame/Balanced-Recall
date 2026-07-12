@@ -6,14 +6,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.At;
 
 import net.balancedrecall.SleepingMat;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
 
 @Mixin(LivingEntity.class)
 public abstract class MixinLivingEntity extends Entity {
-    public MixinLivingEntity(EntityType<?> type, World world) {
+    public MixinLivingEntity(EntityType<?> type, Level world) {
         super(type, world);
     }
 

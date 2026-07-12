@@ -1,36 +1,35 @@
 package net.balancedrecall;
 
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.CycleButton;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.StringWidget;
+import net.minecraft.client.gui.layouts.GridLayout;
+import net.minecraft.client.gui.layouts.HeaderAndFooterLayout;
+import net.minecraft.client.gui.layouts.LinearLayout;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
-
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.CyclingButtonWidget;
-import net.minecraft.client.gui.widget.DirectionalLayoutWidget;
-import net.minecraft.client.gui.widget.GridWidget;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.widget.TextWidget;
-import net.minecraft.client.gui.widget.ThreePartsLayoutWidget;
-import net.minecraft.screen.ScreenTexts;
-import net.minecraft.text.Text;
 
 public class ConfigScreen extends Screen {
     private Screen parent;
-	private final ThreePartsLayoutWidget layout = new ThreePartsLayoutWidget(this);
+	private final HeaderAndFooterLayout layout = new HeaderAndFooterLayout(this);
 	private final BalancedRecallConfig config;
 	
-	private CyclingButtonWidget<Boolean> takeDamageInterruptsRecall;
-	private CyclingButtonWidget<Boolean> takeDamagePutsMirrorOnCooldown;
-	private CyclingButtonWidget<Boolean> recallImpossibleWhenMonstersNearby;
-	private TextFieldWidget magicMirrorUseTime;
-	private TextFieldWidget magicMirrorCooldownTime;
-	private TextFieldWidget dimensionalMirrorUseTime;
-	private TextFieldWidget dimensionalMirrorCooldownTime;
-	private CyclingButtonWidget<Boolean> sleepingMatResetsPhantomTimer;
+	private CycleButton<Boolean> takeDamageInterruptsRecall;
+	private CycleButton<Boolean> takeDamagePutsMirrorOnCooldown;
+	private CycleButton<Boolean> recallImpossibleWhenMonstersNearby;
+	private EditBox magicMirrorUseTime;
+	private EditBox magicMirrorCooldownTime;
+	private EditBox dimensionalMirrorUseTime;
+	private EditBox dimensionalMirrorCooldownTime;
+	private CycleButton<Boolean> sleepingMatResetsPhantomTimer;
 
-	private ButtonWidget resetButton;
+	private Button resetButton;
 
 	public ConfigScreen(@Nullable Screen parent) {
-        super(Text.translatable("balancedrecall.menu.title"));
+        super(Component.translatable("balancedrecall.menu.title"));
 		this.parent = parent;
 		this.config = BalancedRecall.config;
     }
@@ -47,100 +46,100 @@ public class ConfigScreen extends Screen {
 	@Override
 	protected void init() {
 		// Header
-		layout.addHeader(new TextWidget(Text.translatable("config.balancedrecall.title"), this.textRenderer));
+		layout.addToHeader(new StringWidget(Component.translatable("config.balancedrecall.title"), this.font));
 
 		// Footer
-		DirectionalLayoutWidget footer = DirectionalLayoutWidget.horizontal().spacing(8);
-		resetButton = ButtonWidget.builder(Text.translatable("controls.reset"), (btn) -> this.reset()).dimensions(40, 40, 120, 20).build();
-		footer.add(resetButton);
-		footer.add(ButtonWidget.builder(ScreenTexts.DONE, (btn) -> this.close()).dimensions(40, 40, 120, 20).build());
-		this.layout.addFooter(footer);
+		LinearLayout footer = LinearLayout.horizontal().spacing(8);
+		resetButton = Button.builder(Component.translatable("controls.reset"), (btn) -> this.reset()).bounds(40, 40, 120, 20).build();
+		footer.addChild(resetButton);
+		footer.addChild(Button.builder(CommonComponents.GUI_DONE, (btn) -> this.onClose()).bounds(40, 40, 120, 20).build());
+		this.layout.addToFooter(footer);
 
 		// Body
-		DirectionalLayoutWidget body = DirectionalLayoutWidget.vertical().spacing(8);
+		LinearLayout body = LinearLayout.vertical().spacing(8);
 
 		// Mirror settings
-		takeDamageInterruptsRecall = CyclingButtonWidget
-			.onOffBuilder()
-			.build(0, 0, 300, 20, Text.translatable("config.balancedrecall.take_damage_interrupts_recall"), (button, value)->setConfig("take_damage_interrupts_recall", value));
-		body.add(takeDamageInterruptsRecall);
+		takeDamageInterruptsRecall = CycleButton
+			.onOffBuilder(BalancedRecallConfig.DEFAULT_TAKE_DAMAGE_INTERRUPTS_RECALL)
+			.create(0, 0, 300, 20, Component.translatable("config.balancedrecall.take_damage_interrupts_recall"), (button, value)->setConfig("take_damage_interrupts_recall", value));
+		body.addChild(takeDamageInterruptsRecall);
 
-		takeDamagePutsMirrorOnCooldown = CyclingButtonWidget
-			.onOffBuilder()
-			.build(0, 0, 300, 20, Text.translatable("config.balancedrecall.take_damage_puts_mirror_on_cooldown"), (button, value)->setConfig("take_damage_puts_mirror_on_cooldown", value));
-		body.add(takeDamagePutsMirrorOnCooldown);
+		takeDamagePutsMirrorOnCooldown = CycleButton
+			.onOffBuilder(BalancedRecallConfig.DEFAULT_TAKE_DAMAGE_PUTS_MIRROR_ON_COOLDOWN)
+			.create(0, 0, 300, 20, Component.translatable("config.balancedrecall.take_damage_puts_mirror_on_cooldown"), (button, value)->setConfig("take_damage_puts_mirror_on_cooldown", value));
+		body.addChild(takeDamagePutsMirrorOnCooldown);
 
-		recallImpossibleWhenMonstersNearby = CyclingButtonWidget
-			.onOffBuilder()
-			.build(0, 0, 300, 20, Text.translatable("config.balancedrecall.recall_impossible_when_monsters_nearby"), (button, value)->setConfig("recall_impossible_when_monsters_nearby", value));
-		body.add(recallImpossibleWhenMonstersNearby);
+		recallImpossibleWhenMonstersNearby = CycleButton
+			.onOffBuilder(BalancedRecallConfig.DEFAULT_RECALL_IMPOSSIBLE_WHEN_MONSTERS_NEARBY)
+			.create(0, 0, 300, 20, Component.translatable("config.balancedrecall.recall_impossible_when_monsters_nearby"), (button, value)->setConfig("recall_impossible_when_monsters_nearby", value));
+		body.addChild(recallImpossibleWhenMonstersNearby);
 
-		GridWidget grid = new GridWidget();
-		grid.getMainPositioner().margin(4).alignHorizontalCenter();
-		GridWidget.Adder adder = grid.createAdder(2);
-		adder.getMainPositioner().alignLeft().alignVerticalCenter();
+		GridLayout grid = new GridLayout();
+		grid.defaultCellSetting().padding(4).alignHorizontallyCenter();
+		GridLayout.RowHelper adder = grid.createRowHelper(2);
+		adder.defaultCellSetting().alignHorizontallyLeft().alignVerticallyMiddle();
 
-		adder.add(new TextWidget(Text.translatable("config.balancedrecall.magic_mirror_use_time_seconds"), this.textRenderer));
-		magicMirrorUseTime = new TextFieldWidget(
-			this.textRenderer,
+		adder.addChild(new StringWidget(Component.translatable("config.balancedrecall.magic_mirror_use_time_seconds"), this.font));
+		magicMirrorUseTime = new EditBox(
+			this.font,
 			100,
 			20,
-			Text.translatable("config.balancedrecall.magic_mirror_use_time_seconds")
+			Component.translatable("config.balancedrecall.magic_mirror_use_time_seconds")
 		);
-		magicMirrorUseTime.setChangedListener((value)->setConfig("magic_mirror_use_time_seconds", value));
-		adder.add(magicMirrorUseTime);
+		magicMirrorUseTime.setResponder((value)->setConfig("magic_mirror_use_time_seconds", value));
+		adder.addChild(magicMirrorUseTime);
 
-		adder.add(new TextWidget(Text.translatable("config.balancedrecall.dimensional_mirror_use_time_seconds"), this.textRenderer));
-		dimensionalMirrorUseTime = new TextFieldWidget(
-			this.textRenderer,
+		adder.addChild(new StringWidget(Component.translatable("config.balancedrecall.dimensional_mirror_use_time_seconds"), this.font));
+		dimensionalMirrorUseTime = new EditBox(
+			this.font,
 			100,
 			20,
-			Text.translatable("config.balancedrecall.dimensional_mirror_use_time_seconds")
+			Component.translatable("config.balancedrecall.dimensional_mirror_use_time_seconds")
 		);
-		dimensionalMirrorUseTime.setChangedListener((value)->setConfig("dimensional_mirror_use_time_seconds", value));
-		adder.add(dimensionalMirrorUseTime);
+		dimensionalMirrorUseTime.setResponder((value)->setConfig("dimensional_mirror_use_time_seconds", value));
+		adder.addChild(dimensionalMirrorUseTime);
 
-		adder.add(new TextWidget(Text.translatable("config.balancedrecall.magic_mirror_cooldown_time_seconds"), this.textRenderer));
-		magicMirrorCooldownTime = new TextFieldWidget(
-			this.textRenderer,
+		adder.addChild(new StringWidget(Component.translatable("config.balancedrecall.magic_mirror_cooldown_time_seconds"), this.font));
+		magicMirrorCooldownTime = new EditBox(
+			this.font,
 			100,
 			20,
-			Text.translatable("config.balancedrecall.magic_mirror_cooldown_time_seconds")
+			Component.translatable("config.balancedrecall.magic_mirror_cooldown_time_seconds")
 		);
-		magicMirrorCooldownTime.setChangedListener((value)->setConfig("magic_mirror_cooldown_time_seconds", value));
-		adder.add(magicMirrorCooldownTime);
+		magicMirrorCooldownTime.setResponder((value)->setConfig("magic_mirror_cooldown_time_seconds", value));
+		adder.addChild(magicMirrorCooldownTime);
 
-		adder.add(new TextWidget(Text.translatable("config.balancedrecall.dimensional_mirror_cooldown_time_seconds"), this.textRenderer));
-		dimensionalMirrorCooldownTime = new TextFieldWidget(
-			this.textRenderer,
+		adder.addChild(new StringWidget(Component.translatable("config.balancedrecall.dimensional_mirror_cooldown_time_seconds"), this.font));
+		dimensionalMirrorCooldownTime = new EditBox(
+			this.font,
 			100,
 			20,
-			Text.translatable("config.balancedrecall.dimensional_mirror_cooldown_time_seconds")
+			Component.translatable("config.balancedrecall.dimensional_mirror_cooldown_time_seconds")
 		);
-		dimensionalMirrorCooldownTime.setChangedListener((value)->setConfig("dimensional_mirror_cooldown_time_seconds", value));
-		adder.add(dimensionalMirrorCooldownTime);
+		dimensionalMirrorCooldownTime.setResponder((value)->setConfig("dimensional_mirror_cooldown_time_seconds", value));
+		adder.addChild(dimensionalMirrorCooldownTime);
 
-		body.add(grid);
+		body.addChild(grid);
 
-		body.add(new TextWidget(Text.translatable("config.balancedrecall.restart_necessary"), this.textRenderer));
+		body.addChild(new StringWidget(Component.translatable("config.balancedrecall.restart_necessary"), this.font));
 
 		// Mat settings
-		sleepingMatResetsPhantomTimer = CyclingButtonWidget
-			.onOffBuilder()
-			.build(0, 0, 300, 20, Text.translatable("config.balancedrecall.sleeping_mat_resets_phantom_timer"), (button, value)->setConfig("sleeping_mat_resets_phantom_timer", value));
-		body.add(sleepingMatResetsPhantomTimer);
-		this.layout.addBody(body);
+		sleepingMatResetsPhantomTimer = CycleButton
+			.onOffBuilder(BalancedRecallConfig.DEFAULT_SLEEPING_MAT_RESETS_PHANTOM_TIMER)
+			.create(0, 0, 300, 20, Component.translatable("config.balancedrecall.sleeping_mat_resets_phantom_timer"), (button, value)->setConfig("sleeping_mat_resets_phantom_timer", value));
+		body.addChild(sleepingMatResetsPhantomTimer);
+		this.layout.addToContents(body);
 
-		this.layout.forEachChild(child -> {
-			this.addDrawableChild(child);
+		this.layout.visitWidgets(child -> {
+			this.addRenderableWidget(child);
 		});
-		this.refreshWidgetPositions();
+		this.repositionElements();
 		refreshWidgetValues();
 	}
 
 	@Override
-	protected void refreshWidgetPositions() {
-		this.layout.refreshPositions();
+	protected void repositionElements() {
+		this.layout.arrangeElements();
 	}
 
 	private void reset() {
@@ -154,10 +153,10 @@ public class ConfigScreen extends Screen {
 		recallImpossibleWhenMonstersNearby.setValue(config.getBoolean("recall_impossible_when_monsters_nearby"));
 		// TODO: Find a way to scale the model animation dynamically with the use time
 		// (I'm pretty sure this is not possible at runtime sadly)
-		magicMirrorUseTime.setText(config.getDouble("magic_mirror_use_time_seconds").toString());
-		magicMirrorCooldownTime.setText(config.getDouble("magic_mirror_cooldown_time_seconds").toString());
-		dimensionalMirrorUseTime.setText(config.getDouble("dimensional_mirror_use_time_seconds").toString());
-		dimensionalMirrorCooldownTime.setText(config.getDouble("dimensional_mirror_cooldown_time_seconds").toString());
+		magicMirrorUseTime.setValue(config.getDouble("magic_mirror_use_time_seconds").toString());
+		magicMirrorCooldownTime.setValue(config.getDouble("magic_mirror_cooldown_time_seconds").toString());
+		dimensionalMirrorUseTime.setValue(config.getDouble("dimensional_mirror_use_time_seconds").toString());
+		dimensionalMirrorCooldownTime.setValue(config.getDouble("dimensional_mirror_cooldown_time_seconds").toString());
 		sleepingMatResetsPhantomTimer.setValue(config.getBoolean("sleeping_mat_resets_phantom_timer"));
 		refreshWidgetActiveness();
 	}
@@ -175,8 +174,8 @@ public class ConfigScreen extends Screen {
 	}
 
 	@Override
-	public void close() {
+	public void onClose() {
 		config.write();
-		this.client.setScreen(this.parent);
+		this.minecraft.gui.setScreen(this.parent);
 	}
 }
