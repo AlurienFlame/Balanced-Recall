@@ -9,6 +9,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -18,6 +19,7 @@ import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.portal.TeleportTransition;
+import net.minecraft.world.level.storage.LevelData.RespawnData;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import com.mojang.datafixers.util.Either;
@@ -60,16 +62,17 @@ public class MagicMirror extends Item {
         if (!(world instanceof ServerLevel)) {
             return stack;
         }
+        ServerLevel serverLevel = (ServerLevel) world;
 
         ServerPlayer serverPlayer = (ServerPlayer) user;
-        ServerLevel targetWorld = serverPlayer.server.getLevel(serverPlayer.getRespawnDimension());
 
-        if ( !isInterdimensional && serverPlayer.level() != targetWorld) {
+        RespawnData respawnData = serverPlayer.getRespawnConfig().respawnData();
+        if ( !isInterdimensional && respawnData.dimension() != world.dimension()) {
             // This mirror is too weak to cross the veil between worlds! Maybe a rare nether metal could help...
-            serverPlayer.displayClientMessage(Component.translatable("balancedrecall.fail_cross_dimension"), false);
+            serverPlayer.sendOverlayMessage(Component.translatable("balancedrecall.fail_cross_dimension"));
             return stack;
         }
-
+        
         // Cannot teleport while monsters are nearby
         if (BalancedRecall.config.getBoolean("recall_impossible_when_monsters_nearby")) {
             Vec3 feet = Vec3.atBottomCenterOf(serverPlayer.blockPosition());
@@ -77,15 +80,19 @@ public class MagicMirror extends Item {
                 .getEntitiesOfClass(
                     Monster.class,
                     new AABB(feet.x() - 8.0, feet.y() - 5.0, feet.z() - 8.0, feet.x() + 8.0, feet.y() + 5.0, feet.z() + 8.0),
-                    entity -> entity.isPreventingPlayerRest(serverPlayer.serverLevel(), serverPlayer)
+                    entity -> entity.isPreventingPlayerRest(serverLevel, serverPlayer)
                 );
             if (!list.isEmpty()) {
-                serverPlayer.displayClientMessage(Component.translatable("balancedrecall.fail_monsters_nearby"), false);
+                serverPlayer.sendOverlayMessage(Component.translatable("balancedrecall.fail_monsters_nearby"));
                 return stack;
             }
         }
 
-        serverPlayer.teleport(serverPlayer.findRespawnPositionAndUseSpawnBlock(false, TeleportTransition.DO_NOTHING));
+        TeleportTransition transition = serverPlayer.findRespawnPositionAndUseSpawnBlock(false, TeleportTransition.DO_NOTHING);
+        serverPlayer.teleport(transition);
+
+        // ServerLevel targetWorld = serverPlayer.level().getServer().getLevel(respawnData.dimension()); // TODO: get rid of after testing
+        ServerLevel targetWorld = transition.newLevel();
         targetWorld.playSound(null, serverPlayer.blockPosition(), SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.PLAYERS, 0.4f, 1f);
 
         // Update statistics
@@ -93,7 +100,7 @@ public class MagicMirror extends Item {
         serverPlayer.awardStat(Stats.ITEM_USED.get(this));
 
         // Damage durability
-        stack.hurtAndBreak(1, (LivingEntity)serverPlayer, LivingEntity.getSlotForHand(serverPlayer.getUsedItemHand()));
+        stack.hurtAndBreak(1, (LivingEntity)serverPlayer, serverPlayer.getUsedItemHand().asEquipmentSlot());
 
         return stack;
     }

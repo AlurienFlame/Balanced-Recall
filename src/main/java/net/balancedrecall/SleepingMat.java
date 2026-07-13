@@ -23,8 +23,8 @@ public class SleepingMat extends Item {
 	public static final MutableComponent ALREADY_ASLEEP = Component.translatable("item.balancedrecall.sleeping_mat.already_asleep");
 	public static final MutableComponent WRONG_DIMENSION = Component.translatable("item.balancedrecall.sleeping_mat.wrong_dimension");
 	public static final MutableComponent NOT_POSSIBLE = Component.translatable("sleep.not_possible");
-    public static final Component NOT_POSSIBLE_NOW = Player.BedSleepingProblem.NOT_POSSIBLE_NOW.getMessage();
-    public static final Component NOT_SAFE = Player.BedSleepingProblem.NOT_SAFE.getMessage();
+    public static final Component NOT_POSSIBLE_NOW = Component.translatable("block.minecraft.bed.no_sleep");
+    public static final Component NOT_SAFE = Component.translatable("block.minecraft.bed.not_safe");
 
     SleepingMat(net.minecraft.world.item.Item.Properties settings) {
         super(settings);
@@ -45,22 +45,22 @@ public class SleepingMat extends Item {
 
         if (!serverPlayer.isAlive()) {
             // User is dead
-            serverPlayer.displayClientMessage(USER_DEAD, false);
+            serverPlayer.sendOverlayMessage(USER_DEAD);
             return InteractionResult.PASS;
 
         } else if (serverPlayer.isSleeping()) {
             // User is already sleeping
-            serverPlayer.displayClientMessage(ALREADY_ASLEEP, false);
+            serverPlayer.sendOverlayMessage(ALREADY_ASLEEP);
             return InteractionResult.PASS;
 
         } else if (!world.dimensionType().natural()) {
             // Wrong dimension
-            serverPlayer.displayClientMessage(WRONG_DIMENSION, false);
+            serverPlayer.sendOverlayMessage(WRONG_DIMENSION);
             return InteractionResult.PASS;
 
         } else if (world.isDay()) {
             // It's daytime
-            serverPlayer.displayClientMessage(NOT_POSSIBLE_NOW, false);
+            serverPlayer.sendOverlayMessage(NOT_POSSIBLE_NOW);
             return InteractionResult.PASS;
 
         } else if (!serverPlayer.isCreative()) {
@@ -70,7 +70,7 @@ public class SleepingMat extends Item {
                 return hostileEntity.isPreventingPlayerRest(serverPlayer.serverLevel(), serverPlayer);
             });
             if (!list.isEmpty()) {
-                serverPlayer.displayClientMessage(NOT_SAFE, false);
+                serverPlayer.sendOverlayMessage(NOT_SAFE);
                 return InteractionResult.PASS;
             }
         }
@@ -80,7 +80,7 @@ public class SleepingMat extends Item {
 
         // Skip the night
         if (!((ServerPlayer) serverPlayer).serverLevel().canSleepThroughNights()) {
-            serverPlayer.displayClientMessage(NOT_POSSIBLE, false);
+            serverPlayer.sendOverlayMessage(NOT_POSSIBLE);
         }
         ((ServerLevel) world).updateSleepingPlayerList();
 
