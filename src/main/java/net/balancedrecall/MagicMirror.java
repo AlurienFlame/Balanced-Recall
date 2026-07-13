@@ -69,7 +69,7 @@ public class MagicMirror extends Item {
         RespawnData respawnData = serverPlayer.getRespawnConfig().respawnData();
         if ( !isInterdimensional && respawnData.dimension() != world.dimension()) {
             // This mirror is too weak to cross the veil between worlds! Maybe a rare nether metal could help...
-            serverPlayer.sendOverlayMessage(Component.translatable("balancedrecall.fail_cross_dimension"));
+            serverPlayer.sendSystemMessage(Component.translatable("balancedrecall.fail_cross_dimension"));
             return stack;
         }
         
@@ -83,7 +83,7 @@ public class MagicMirror extends Item {
                     entity -> entity.isPreventingPlayerRest(serverLevel, serverPlayer)
                 );
             if (!list.isEmpty()) {
-                serverPlayer.sendOverlayMessage(Component.translatable("balancedrecall.fail_monsters_nearby"));
+                serverPlayer.sendSystemMessage(Component.translatable("balancedrecall.fail_monsters_nearby"));
                 return stack;
             }
         }

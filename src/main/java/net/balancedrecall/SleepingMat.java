@@ -48,14 +48,14 @@ public class SleepingMat extends Item {
 
         if (!serverPlayer.isAlive()) {
             // User is dead
-            serverPlayer.sendOverlayMessage(USER_DEAD);
+            serverPlayer.sendSystemMessage(USER_DEAD);
             return InteractionResult.PASS;
 
         }
 
         if (serverPlayer.isSleeping()) {
             // User is already sleeping
-            serverPlayer.sendOverlayMessage(ALREADY_ASLEEP);
+            serverPlayer.sendSystemMessage(ALREADY_ASLEEP);
             return InteractionResult.PASS;
 
         }
@@ -66,13 +66,13 @@ public class SleepingMat extends Item {
         
         if (rule.explodes()) {
             // User is in the correct dimension
-            serverPlayer.sendOverlayMessage(WRONG_DIMENSION);
+            serverPlayer.sendSystemMessage(WRONG_DIMENSION);
             return InteractionResult.PASS;
         }
         
         if (!rule.canSleep(world)) {
             // It's daytime in the correct dimension (no message if wrong dim)
-            serverPlayer.sendOverlayMessage(rule.asProblem().message());
+            serverPlayer.sendSystemMessage(rule.asProblem().message());
             return InteractionResult.PASS;
         }
 
@@ -82,7 +82,7 @@ public class SleepingMat extends Item {
                 return hostileEntity.isPreventingPlayerRest(serverPlayer.level(), serverPlayer);
             });
             if (!list.isEmpty()) {
-                serverPlayer.sendOverlayMessage(NOT_SAFE);
+                serverPlayer.sendSystemMessage(NOT_SAFE);
                 return InteractionResult.PASS;
             }
         }
@@ -92,7 +92,7 @@ public class SleepingMat extends Item {
 
         // Skip the night
         if (!((ServerPlayer) serverPlayer).level().canSleepThroughNights()) {
-            serverPlayer.sendOverlayMessage(NOT_POSSIBLE);
+            serverPlayer.sendSystemMessage(NOT_POSSIBLE);
         }
         ((ServerLevel) world).updateSleepingPlayerList();
 
