@@ -18,10 +18,10 @@ public abstract class MixinLivingEntity extends Entity {
     }
 
     // Convince the game that using a sleeping mat counts as sleeping in a bed
-    @Inject(method = "isSleepingInBed", at = @At("HEAD"), cancellable = true)
-    protected void isSleepingInBed(CallbackInfoReturnable<Boolean> callbackInfo) {
-        if (SleepingMat.isHoldingSleepingMat((LivingEntity) (Entity) this)) {
-            callbackInfo.setReturnValue(true);
-        }
-    }
+    // @Inject(method = "isSleepingInBed", at = @At("HEAD"), cancellable = true)
+    // protected void isSleepingInBed(CallbackInfoReturnable<Boolean> callbackInfo) {
+    //     if (SleepingMat.isHoldingSleepingMat((LivingEntity) (Entity) this)) {
+    //         callbackInfo.setReturnValue(true);
+    //     }
+    // }
 }

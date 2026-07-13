@@ -20,30 +20,30 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 @Mixin(Player.class)
-public abstract class MixinPlayerEntity extends LivingEntity implements MatSleepingPlayer {
+public abstract class MixinPlayer extends LivingEntity implements MatSleepingPlayer {
 
-    protected MixinPlayerEntity(EntityType<? extends LivingEntity> type, Level world) {
+    protected MixinPlayer(EntityType<? extends LivingEntity> type, Level world) {
         super(type, world);
     }
 
     // We make our own method because we can't use PlayerEntity.trySleep as it's overriden by
     // ServerEntity.trySleep, which sets spawn (we don't want that)
     @Shadow
-    private int sleepTimer;
+    private int sleepCounter; // FIXME: not found
 
     @Override
     public void sleepOnMat(BlockPos pos) {
         super.startSleeping(pos);
-        this.sleepTimer = 0;
+        this.sleepCounter = 0;
     }
 
     // This only exists to make the compiler stop whining, it should never run
     @Shadow
-    public abstract ItemCooldowns getItemCooldownManager();
+    public abstract ItemCooldowns getCooldowns();
 
     // Interrupt magic mirror usage when taking damage
-    @Inject(method = "applyDamage(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/entity/damage/DamageSource;F)V", at = @At("HEAD"))
-    protected void applyDamage(ServerLevel world, DamageSource source, float amount, CallbackInfo info) {
+    @Inject(method = "actuallyHurt(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;F)V", at = @At("HEAD"))
+    protected void actuallyHurt(ServerLevel world, DamageSource source, float amount, CallbackInfo info) {
         if (BalancedRecall.config.getBoolean("take_damage_interrupts_recall") && !this.isInvulnerableTo(world, source)) {
             // Interrupt usage
             ItemStack stack = this.getUseItem();
@@ -51,7 +51,7 @@ public abstract class MixinPlayerEntity extends LivingEntity implements MatSleep
                 this.releaseUsingItem();
                 if (BalancedRecall.config.getBoolean("take_damage_puts_mirror_on_cooldown")) {
                     // Start cooldown
-                    this.getItemCooldownManager().addCooldown(stack, stack.getItem().components().get(DataComponents.USE_COOLDOWN).ticks());
+                    this.getCooldowns().addCooldown(stack, stack.getItem().components().get(DataComponents.USE_COOLDOWN).ticks());
                 }
             }
 
