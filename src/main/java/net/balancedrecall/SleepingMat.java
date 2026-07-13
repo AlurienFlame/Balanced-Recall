@@ -8,6 +8,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.attribute.BedRule;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.monster.Monster;
@@ -24,7 +26,7 @@ public class SleepingMat extends Item {
 	public static final MutableComponent WRONG_DIMENSION = Component.translatable("item.balancedrecall.sleeping_mat.wrong_dimension");
 	public static final MutableComponent NOT_POSSIBLE = Component.translatable("sleep.not_possible");
     public static final Component NOT_POSSIBLE_NOW = Component.translatable("block.minecraft.bed.no_sleep");
-    public static final Component NOT_SAFE = Component.translatable("block.minecraft.bed.not_safe");
+    public static final Component NOT_SAFE = Player.BedSleepingProblem.NOT_SAFE.message();
 
     SleepingMat(net.minecraft.world.item.Item.Properties settings) {
         super(settings);
@@ -32,6 +34,7 @@ public class SleepingMat extends Item {
 
     @Override
     public InteractionResult use(Level world, Player user, InteractionHand hand) {
+        // TODO: rename to align with mojmap
         ItemStack stack = user.getItemInHand(hand);
 
         // ServerPlayerEntity.trySleep is where spawn is set, we need to circumvent it while taking advantage of as much vanilla code as possible
@@ -48,26 +51,35 @@ public class SleepingMat extends Item {
             serverPlayer.sendOverlayMessage(USER_DEAD);
             return InteractionResult.PASS;
 
-        } else if (serverPlayer.isSleeping()) {
+        }
+
+        if (serverPlayer.isSleeping()) {
             // User is already sleeping
             serverPlayer.sendOverlayMessage(ALREADY_ASLEEP);
             return InteractionResult.PASS;
 
-        } else if (!world.dimensionType().natural()) {
-            // Wrong dimension
+        }
+
+        // check bedrules
+        Vec3 pos = serverPlayer.position();
+        BedRule rule = world.environmentAttributes().getValue(EnvironmentAttributes.BED_RULE, pos);
+        
+        if (rule.explodes()) {
+            // User is in the correct dimension
             serverPlayer.sendOverlayMessage(WRONG_DIMENSION);
             return InteractionResult.PASS;
-
-        } else if (world.isDay()) {
-            // It's daytime
-            serverPlayer.sendOverlayMessage(NOT_POSSIBLE_NOW);
+        }
+        
+        if (!rule.canSleep(world)) {
+            // It's daytime in the correct dimension (no message if wrong dim)
+            serverPlayer.sendOverlayMessage(rule.asProblem().message());
             return InteractionResult.PASS;
+        }
 
-        } else if (!serverPlayer.isCreative()) {
+        if (!serverPlayer.isCreative()) {
             // Hostile entities too close
-            Vec3 pos = serverPlayer.position();
             List<Monster> list = world.getEntitiesOfClass(Monster.class, new AABB(pos.x() - 8.0D, pos.y() - 5.0D, pos.z() - 8.0D, pos.x() + 8.0D, pos.y() + 5.0D, pos.z() + 8.0D), (hostileEntity) -> {
-                return hostileEntity.isPreventingPlayerRest(serverPlayer.serverLevel(), serverPlayer);
+                return hostileEntity.isPreventingPlayerRest(serverPlayer.level(), serverPlayer);
             });
             if (!list.isEmpty()) {
                 serverPlayer.sendOverlayMessage(NOT_SAFE);
@@ -79,7 +91,7 @@ public class SleepingMat extends Item {
         ((MatSleepingPlayer) serverPlayer).sleepOnMat(serverPlayer.blockPosition());
 
         // Skip the night
-        if (!((ServerPlayer) serverPlayer).serverLevel().canSleepThroughNights()) {
+        if (!((ServerPlayer) serverPlayer).level().canSleepThroughNights()) {
             serverPlayer.sendOverlayMessage(NOT_POSSIBLE);
         }
         ((ServerLevel) world).updateSleepingPlayerList();
@@ -95,7 +107,7 @@ public class SleepingMat extends Item {
         // BUG: When used on 1 durability, item breaks, but player still tries to sleep briefly before cancelling
         // This is caused by the way we check if sleeping is possible: checking if the player is holding a sleeping mat.
         // Because the player stops holding the mat when it breaks, that interrupts the sleep.
-        stack.hurtAndBreak(1, serverPlayer, LivingEntity.getSlotForHand(serverPlayer.getUsedItemHand()));
+        stack.hurtAndBreak(1, serverPlayer, serverPlayer.getUsedItemHand().asEquipmentSlot());
 
         return InteractionResult.CONSUME;
     }
