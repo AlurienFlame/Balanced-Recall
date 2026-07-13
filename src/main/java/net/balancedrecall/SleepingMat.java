@@ -1,6 +1,9 @@
 package net.balancedrecall;
 
 import java.util.List;
+
+import org.jspecify.annotations.NonNull;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
@@ -25,7 +28,6 @@ public class SleepingMat extends Item {
 	public static final MutableComponent ALREADY_ASLEEP = Component.translatable("item.balancedrecall.sleeping_mat.already_asleep");
 	public static final MutableComponent WRONG_DIMENSION = Component.translatable("item.balancedrecall.sleeping_mat.wrong_dimension");
 	public static final MutableComponent NOT_POSSIBLE = Component.translatable("sleep.not_possible");
-    public static final Component NOT_POSSIBLE_NOW = Component.translatable("block.minecraft.bed.no_sleep");
     public static final Component NOT_SAFE = Player.BedSleepingProblem.NOT_SAFE.message();
 
     SleepingMat(net.minecraft.world.item.Item.Properties settings) {
@@ -33,7 +35,7 @@ public class SleepingMat extends Item {
     }
 
     @Override
-    public InteractionResult use(Level world, Player user, InteractionHand hand) {
+    public @NonNull InteractionResult use(@NonNull Level world, @NonNull Player user, @NonNull InteractionHand hand) {
         // TODO: rename to align with mojmap
         ItemStack stack = user.getItemInHand(hand);
 
