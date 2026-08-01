@@ -1,7 +1,5 @@
 package net.balancedrecall;
 
-import org.jspecify.annotations.NonNull;
-
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
@@ -12,7 +10,7 @@ public class DimensionalMirror extends MagicMirror{
     }
 
     @Override
-    public int getUseDuration(@NonNull ItemStack stack, @NonNull LivingEntity user) {
+    public int getUseDuration(ItemStack stack, LivingEntity user) {
         return (int)(BalancedRecall.config.getDouble("dimensional_mirror_use_time_seconds") * 20);
     }
 }

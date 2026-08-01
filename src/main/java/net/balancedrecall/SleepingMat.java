@@ -2,8 +2,6 @@ package net.balancedrecall;
 
 import java.util.List;
 
-import org.jspecify.annotations.NonNull;
-
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
@@ -35,7 +33,7 @@ public class SleepingMat extends Item {
     }
 
     @Override
-    public @NonNull InteractionResult use(@NonNull Level world, @NonNull Player user, @NonNull InteractionHand hand) {
+    public InteractionResult use(Level world, Player user, InteractionHand hand) {
         // TODO: rename to align with mojmap
         ItemStack stack = user.getItemInHand(hand);
 

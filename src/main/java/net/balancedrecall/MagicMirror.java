@@ -2,8 +2,6 @@ package net.balancedrecall;
 
 import java.util.List;
 
-import org.jspecify.annotations.NonNull;
-
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
@@ -41,7 +39,7 @@ public class MagicMirror extends Item {
 
 
     @Override
-    public @NonNull InteractionResult use(@NonNull Level world, @NonNull Player playerEntity, @NonNull InteractionHand hand) {
+    public InteractionResult use(Level world, Player playerEntity, InteractionHand hand) {
         ItemStack stack = playerEntity.getItemInHand(hand);
         if (MagicMirror.isUsable(stack)) {
             // Use item
@@ -53,12 +51,12 @@ public class MagicMirror extends Item {
     }
 
     @Override
-    public @NonNull ItemUseAnimation getUseAnimation(@NonNull ItemStack stack) {
+    public ItemUseAnimation getUseAnimation(ItemStack stack) {
         return ItemUseAnimation.BOW;
     }
 
     @Override
-    public @NonNull ItemStack finishUsingItem(@NonNull ItemStack stack, @NonNull Level world, @NonNull LivingEntity user) {
+    public ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity user) {
         // finishUsing runs on both the server and the client (for some reason),
         // but we only want to run this code on the server.
 
@@ -80,7 +78,7 @@ public class MagicMirror extends Item {
         // Cannot teleport while monsters are nearby
         if (BalancedRecall.config.getBoolean("recall_impossible_when_monsters_nearby")) {
             Vec3 feet = Vec3.atBottomCenterOf(serverPlayer.blockPosition());
-            List<@NonNull Monster> list = serverPlayer.level()
+            List<Monster> list = serverPlayer.level()
                 .getEntitiesOfClass(
                     Monster.class,
                     new AABB(feet.x() - 8.0, feet.y() - 5.0, feet.z() - 8.0, feet.x() + 8.0, feet.y() + 5.0, feet.z() + 8.0),
@@ -109,7 +107,7 @@ public class MagicMirror extends Item {
     }
 
     @Override
-    public int getUseDuration(@NonNull ItemStack stack, @NonNull LivingEntity user) {
+    public int getUseDuration(ItemStack stack, LivingEntity user) {
         return (int)(BalancedRecall.config.getDouble("magic_mirror_use_time_seconds") * 20);
     }
 }

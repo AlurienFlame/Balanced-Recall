@@ -10,7 +10,6 @@ import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.Nullable;
 
 public class ConfigScreen extends Screen {
     private Screen parent;
@@ -28,7 +27,7 @@ public class ConfigScreen extends Screen {
 
 	private Button resetButton;
 
-	public ConfigScreen(@Nullable Screen parent) {
+	public ConfigScreen(Screen parent) {
         super(Component.translatable("balancedrecall.menu.title"));
 		this.parent = parent;
 		this.config = BalancedRecall.config;
