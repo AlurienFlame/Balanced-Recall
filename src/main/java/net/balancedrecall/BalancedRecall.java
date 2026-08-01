@@ -16,14 +16,14 @@ import net.minecraft.world.item.Items;
 public class BalancedRecall implements ModInitializer {
     public static final String MODID = "balancedrecall";
 
-    public static final BalancedRecallConfig config = new BalancedRecallConfig();
+    public static final BalancedRecallConfig config = BalancedRecallConfig.read();
 
     // Items
     private static final ResourceKey<Item> magic_mirror_key = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MODID, "magic_mirror"));
-    public static final Item MAGIC_MIRROR = new MagicMirror(new Item.Properties().setId(magic_mirror_key).durability(256).repairable(Items.ENDER_PEARL).useCooldown(config.getDouble("magic_mirror_cooldown_time_seconds").floatValue()));
+    public static final Item MAGIC_MIRROR = new MagicMirror(new Item.Properties().setId(magic_mirror_key).durability(256).repairable(Items.ENDER_PEARL).useCooldown((float) config.magicMirrorCooldownTimeSeconds));
 
     private static final ResourceKey<Item> dimensional_mirror_key = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MODID, "dimensional_mirror"));
-    public static final Item DIMENSIONAL_MIRROR = new DimensionalMirror(new Item.Properties().setId(dimensional_mirror_key).durability(512).fireResistant().repairable(Items.ENDER_PEARL).useCooldown(config.getDouble("dimensional_mirror_cooldown_time_seconds").floatValue()));
+    public static final Item DIMENSIONAL_MIRROR = new DimensionalMirror(new Item.Properties().setId(dimensional_mirror_key).durability(512).fireResistant().repairable(Items.ENDER_PEARL).useCooldown((float) config.dimensionalMirrorCooldownTimeSeconds));
 
     private static final ResourceKey<Item> sleeping_mat_key = ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(MODID, "sleeping_mat"));
     public static final Item SLEEPING_MAT = new SleepingMat(new Item.Properties().setId(sleeping_mat_key).durability(128));

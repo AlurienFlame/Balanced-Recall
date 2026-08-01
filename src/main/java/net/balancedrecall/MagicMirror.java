@@ -76,7 +76,7 @@ public class MagicMirror extends Item {
         }
         
         // Cannot teleport while monsters are nearby
-        if (BalancedRecall.config.getBoolean("recall_impossible_when_monsters_nearby")) {
+        if (BalancedRecall.config.recallImpossibleWhenMonstersNearby) {
             Vec3 feet = Vec3.atBottomCenterOf(serverPlayer.blockPosition());
             List<Monster> list = serverPlayer.level()
                 .getEntitiesOfClass(
@@ -108,6 +108,6 @@ public class MagicMirror extends Item {
 
     @Override
     public int getUseDuration(ItemStack stack, LivingEntity user) {
-        return (int)(BalancedRecall.config.getDouble("magic_mirror_use_time_seconds") * 20);
+        return (int)(BalancedRecall.config.magicMirrorUseTimeSeconds * 20);
     }
 }

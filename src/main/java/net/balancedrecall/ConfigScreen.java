@@ -33,15 +33,6 @@ public class ConfigScreen extends Screen {
 		this.config = BalancedRecall.config;
     }
 
-	private void setConfig(String key, Boolean value) {
-		config.set(key, value);
-		refreshWidgetActiveness();
-	}
-	private void setConfig (String key, String value) {
-		config.set(key, value);
-		refreshWidgetActiveness();
-	}
-
 	@Override
 	protected void init() {
 		// Header
@@ -59,18 +50,27 @@ public class ConfigScreen extends Screen {
 
 		// Mirror settings
 		takeDamageInterruptsRecall = CycleButton
-			.onOffBuilder(BalancedRecallConfig.DEFAULT_TAKE_DAMAGE_INTERRUPTS_RECALL)
-			.create(0, 0, 300, 20, Component.translatable("config.balancedrecall.take_damage_interrupts_recall"), (button, value)->setConfig("take_damage_interrupts_recall", value));
+			.onOffBuilder(BalancedRecallConfig.DEFAULTS.takeDamageInterruptsRecall)
+			.create(0, 0, 300, 20, Component.translatable("config.balancedrecall.take_damage_interrupts_recall"), (button, value)->{
+				config.takeDamageInterruptsRecall = value;
+				refreshWidgetActiveness();
+			});
 		body.addChild(takeDamageInterruptsRecall);
 
 		takeDamagePutsMirrorOnCooldown = CycleButton
-			.onOffBuilder(BalancedRecallConfig.DEFAULT_TAKE_DAMAGE_PUTS_MIRROR_ON_COOLDOWN)
-			.create(0, 0, 300, 20, Component.translatable("config.balancedrecall.take_damage_puts_mirror_on_cooldown"), (button, value)->setConfig("take_damage_puts_mirror_on_cooldown", value));
+			.onOffBuilder(BalancedRecallConfig.DEFAULTS.takeDamagePutsMirrorOnCooldown)
+			.create(0, 0, 300, 20, Component.translatable("config.balancedrecall.take_damage_puts_mirror_on_cooldown"), (button, value)->{
+				config.takeDamagePutsMirrorOnCooldown = value;
+				refreshWidgetActiveness();
+			});
 		body.addChild(takeDamagePutsMirrorOnCooldown);
 
 		recallImpossibleWhenMonstersNearby = CycleButton
-			.onOffBuilder(BalancedRecallConfig.DEFAULT_RECALL_IMPOSSIBLE_WHEN_MONSTERS_NEARBY)
-			.create(0, 0, 300, 20, Component.translatable("config.balancedrecall.recall_impossible_when_monsters_nearby"), (button, value)->setConfig("recall_impossible_when_monsters_nearby", value));
+			.onOffBuilder(BalancedRecallConfig.DEFAULTS.recallImpossibleWhenMonstersNearby)
+			.create(0, 0, 300, 20, Component.translatable("config.balancedrecall.recall_impossible_when_monsters_nearby"), (button, value)->{
+				config.recallImpossibleWhenMonstersNearby = value;
+				refreshWidgetActiveness();
+			});
 		body.addChild(recallImpossibleWhenMonstersNearby);
 
 		GridLayout grid = new GridLayout();
@@ -85,7 +85,14 @@ public class ConfigScreen extends Screen {
 			20,
 			Component.translatable("config.balancedrecall.magic_mirror_use_time_seconds")
 		);
-		magicMirrorUseTime.setResponder((value)->setConfig("magic_mirror_use_time_seconds", value));
+		magicMirrorUseTime.setResponder((value)->{
+			try {
+				config.magicMirrorUseTimeSeconds = Double.parseDouble(value);
+				refreshWidgetActiveness();
+			} catch (NumberFormatException e) {
+				return;
+			}
+		});
 		adder.addChild(magicMirrorUseTime);
 
 		adder.addChild(new StringWidget(Component.translatable("config.balancedrecall.dimensional_mirror_use_time_seconds"), this.font));
@@ -95,7 +102,14 @@ public class ConfigScreen extends Screen {
 			20,
 			Component.translatable("config.balancedrecall.dimensional_mirror_use_time_seconds")
 		);
-		dimensionalMirrorUseTime.setResponder((value)->setConfig("dimensional_mirror_use_time_seconds", value));
+		dimensionalMirrorUseTime.setResponder((value)->{
+			try {
+				config.dimensionalMirrorUseTimeSeconds = Double.parseDouble(value);
+				refreshWidgetActiveness();
+			} catch (NumberFormatException e) {
+				return;
+			}
+		});
 		adder.addChild(dimensionalMirrorUseTime);
 
 		adder.addChild(new StringWidget(Component.translatable("config.balancedrecall.magic_mirror_cooldown_time_seconds"), this.font));
@@ -105,7 +119,14 @@ public class ConfigScreen extends Screen {
 			20,
 			Component.translatable("config.balancedrecall.magic_mirror_cooldown_time_seconds")
 		);
-		magicMirrorCooldownTime.setResponder((value)->setConfig("magic_mirror_cooldown_time_seconds", value));
+		magicMirrorCooldownTime.setResponder((value)->{
+			try {
+				config.magicMirrorCooldownTimeSeconds = Double.parseDouble(value);
+				refreshWidgetActiveness();
+			} catch (NumberFormatException e) {
+				return;
+			}
+		});
 		adder.addChild(magicMirrorCooldownTime);
 
 		adder.addChild(new StringWidget(Component.translatable("config.balancedrecall.dimensional_mirror_cooldown_time_seconds"), this.font));
@@ -115,7 +136,14 @@ public class ConfigScreen extends Screen {
 			20,
 			Component.translatable("config.balancedrecall.dimensional_mirror_cooldown_time_seconds")
 		);
-		dimensionalMirrorCooldownTime.setResponder((value)->setConfig("dimensional_mirror_cooldown_time_seconds", value));
+		dimensionalMirrorCooldownTime.setResponder((value)->{
+			try {
+				config.dimensionalMirrorCooldownTimeSeconds = Double.parseDouble(value);
+				refreshWidgetActiveness();
+			} catch (NumberFormatException e) {
+				return;
+			}
+		});
 		adder.addChild(dimensionalMirrorCooldownTime);
 
 		body.addChild(grid);
@@ -124,8 +152,11 @@ public class ConfigScreen extends Screen {
 
 		// Mat settings
 		sleepingMatResetsPhantomTimer = CycleButton
-			.onOffBuilder(BalancedRecallConfig.DEFAULT_SLEEPING_MAT_RESETS_PHANTOM_TIMER)
-			.create(0, 0, 300, 20, Component.translatable("config.balancedrecall.sleeping_mat_resets_phantom_timer"), (button, value)->setConfig("sleeping_mat_resets_phantom_timer", value));
+			.onOffBuilder(BalancedRecallConfig.DEFAULTS.sleepingMatResetsPhantomTimer)
+			.create(0, 0, 300, 20, Component.translatable("config.balancedrecall.sleeping_mat_resets_phantom_timer"), (button, value)->{
+				config.sleepingMatResetsPhantomTimer = value;
+				refreshWidgetActiveness();
+			});
 		body.addChild(sleepingMatResetsPhantomTimer);
 		this.layout.addToContents(body);
 
@@ -147,16 +178,14 @@ public class ConfigScreen extends Screen {
 	}
 
 	private void refreshWidgetValues() {
-		takeDamageInterruptsRecall.setValue(config.getBoolean("take_damage_interrupts_recall"));
-		takeDamagePutsMirrorOnCooldown.setValue(config.getBoolean("take_damage_puts_mirror_on_cooldown"));
-		recallImpossibleWhenMonstersNearby.setValue(config.getBoolean("recall_impossible_when_monsters_nearby"));
-		// TODO: Find a way to scale the model animation dynamically with the use time
-		// (I'm pretty sure this is not possible at runtime sadly)
-		magicMirrorUseTime.setValue(config.getDouble("magic_mirror_use_time_seconds").toString());
-		magicMirrorCooldownTime.setValue(config.getDouble("magic_mirror_cooldown_time_seconds").toString());
-		dimensionalMirrorUseTime.setValue(config.getDouble("dimensional_mirror_use_time_seconds").toString());
-		dimensionalMirrorCooldownTime.setValue(config.getDouble("dimensional_mirror_cooldown_time_seconds").toString());
-		sleepingMatResetsPhantomTimer.setValue(config.getBoolean("sleeping_mat_resets_phantom_timer"));
+		takeDamageInterruptsRecall.setValue(config.takeDamageInterruptsRecall);
+		takeDamagePutsMirrorOnCooldown.setValue(config.takeDamagePutsMirrorOnCooldown);
+		recallImpossibleWhenMonstersNearby.setValue(config.recallImpossibleWhenMonstersNearby);
+		magicMirrorUseTime.setValue(Double.toString(config.magicMirrorUseTimeSeconds));
+		magicMirrorCooldownTime.setValue(Double.toString(config.magicMirrorCooldownTimeSeconds));
+		dimensionalMirrorUseTime.setValue(Double.toString(config.dimensionalMirrorUseTimeSeconds));
+		dimensionalMirrorCooldownTime.setValue(Double.toString(config.dimensionalMirrorCooldownTimeSeconds));
+		sleepingMatResetsPhantomTimer.setValue(config.sleepingMatResetsPhantomTimer);
 		refreshWidgetActiveness();
 	}
 
@@ -165,10 +194,10 @@ public class ConfigScreen extends Screen {
 		resetButton.active = !config.areDefaults();
 
 		// This option can only be true if the other one is, otherwise the button is disabled.
-		takeDamagePutsMirrorOnCooldown.active = config.getBoolean("take_damage_interrupts_recall");
-		if (!config.getBoolean("take_damage_interrupts_recall") && takeDamagePutsMirrorOnCooldown.getValue()) {
+		takeDamagePutsMirrorOnCooldown.active = config.takeDamageInterruptsRecall;
+		if (!config.takeDamageInterruptsRecall && takeDamagePutsMirrorOnCooldown.getValue()) {
 			takeDamagePutsMirrorOnCooldown.setValue(false);
-			setConfig("take_damage_puts_mirror_on_cooldown", false);
+			config.takeDamagePutsMirrorOnCooldown = false;
 		}
 	}
 

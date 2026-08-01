@@ -11,6 +11,6 @@ public class DimensionalMirror extends MagicMirror{
 
     @Override
     public int getUseDuration(ItemStack stack, LivingEntity user) {
-        return (int)(BalancedRecall.config.getDouble("dimensional_mirror_use_time_seconds") * 20);
+        return (int)(BalancedRecall.config.dimensionalMirrorUseTimeSeconds * 20);
     }
 }

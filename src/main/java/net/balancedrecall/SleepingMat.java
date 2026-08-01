@@ -102,7 +102,7 @@ public class SleepingMat extends Item {
         // Update statistics
         serverPlayer.awardStat(Stats.ITEM_USED.get(this));
         serverPlayer.awardStat(BalancedRecall.MAT_SLEEPS);
-        if (BalancedRecall.config.getBoolean("sleeping_mat_resets_phantom_timer")) {
+        if (BalancedRecall.config.sleepingMatResetsPhantomTimer) {
             serverPlayer.resetStat(Stats.CUSTOM.get(Stats.TIME_SINCE_REST));
         }
 

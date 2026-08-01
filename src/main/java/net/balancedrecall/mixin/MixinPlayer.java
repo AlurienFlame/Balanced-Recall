@@ -44,12 +44,12 @@ public abstract class MixinPlayer extends LivingEntity implements MatSleepingPla
     // Interrupt magic mirror usage when taking damage
     @Inject(method = "actuallyHurt(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;F)V", at = @At("HEAD"))
     protected void actuallyHurt(ServerLevel world, DamageSource source, float amount, CallbackInfo info) {
-        if (BalancedRecall.config.getBoolean("take_damage_interrupts_recall") && !this.isInvulnerableTo(world, source)) {
+        if (BalancedRecall.config.takeDamageInterruptsRecall && !this.isInvulnerableTo(world, source)) {
             // Interrupt usage
             ItemStack stack = this.getUseItem();
             if (stack.getItem() == BalancedRecall.MAGIC_MIRROR || stack.getItem() == BalancedRecall.DIMENSIONAL_MIRROR) {
                 this.releaseUsingItem();
-                if (BalancedRecall.config.getBoolean("take_damage_puts_mirror_on_cooldown")) {
+                if (BalancedRecall.config.takeDamagePutsMirrorOnCooldown) {
                     // Start cooldown
                     this.getCooldowns().addCooldown(stack, stack.getItem().components().get(DataComponents.USE_COOLDOWN).ticks());
                 }
