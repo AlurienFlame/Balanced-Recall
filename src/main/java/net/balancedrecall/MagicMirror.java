@@ -61,12 +61,13 @@ public class MagicMirror extends Item {
     public @NonNull ItemStack finishUsingItem(@NonNull ItemStack stack, @NonNull Level world, @NonNull LivingEntity user) {
         // finishUsing runs on both the server and the client (for some reason),
         // but we only want to run this code on the server.
-        if (!(world instanceof ServerLevel)) {
+
+        if (!(world instanceof ServerLevel serverLevel)) {
             return stack;
         }
-        ServerLevel serverLevel = (ServerLevel) world;
-
-        ServerPlayer serverPlayer = (ServerPlayer) user;
+        if (!(user instanceof ServerPlayer serverPlayer)) {
+            return stack;
+        }
 
         RespawnConfig respawnConfig = serverPlayer.getRespawnConfig();
         ResourceKey<Level> respawnDimension = respawnConfig != null ? respawnConfig.respawnData().dimension() : Level.OVERWORLD;

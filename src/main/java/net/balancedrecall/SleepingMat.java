@@ -42,11 +42,14 @@ public class SleepingMat extends Item {
         // ServerPlayerEntity.trySleep is where spawn is set, we need to circumvent it while taking advantage of as much vanilla code as possible
         // We also need to make sure that time since last sleep doesn't get reset - I don't want the sleeping mat to stop phantoms from spawning
 
-        if (!(world instanceof ServerLevel)) {
+        if (!(world instanceof ServerLevel serverLevel)) {
             // Running on the client (bad)
             return InteractionResult.PASS;
         }
-        ServerPlayer serverPlayer = (ServerPlayer) user;
+
+        if (!(user instanceof ServerPlayer serverPlayer)) {
+            return InteractionResult.PASS;
+        }
 
         if (!serverPlayer.isAlive()) {
             // User is dead
@@ -93,10 +96,10 @@ public class SleepingMat extends Item {
         ((MatSleepingPlayer) serverPlayer).sleepOnMat(serverPlayer.blockPosition());
 
         // Skip the night
-        if (!((ServerPlayer) serverPlayer).level().canSleepThroughNights()) {
+        if (!serverPlayer.level().canSleepThroughNights()) {
             serverPlayer.sendSystemMessage(NOT_POSSIBLE);
         }
-        ((ServerLevel) world).updateSleepingPlayerList();
+        serverLevel.updateSleepingPlayerList();
 
         // Update statistics
         serverPlayer.awardStat(Stats.ITEM_USED.get(this));
